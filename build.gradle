@@ -39,6 +39,8 @@ dependencies {
     // queryDsl 추가
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+    // 최초 예외 발생 시 , 조상 예외 식별
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 }
 
 tasks.named('test') {
