@@ -1,5 +1,4 @@
-package com.example.blog.model.user;
-
+package com.example.blog.model.qna;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,32 +16,20 @@ import java.time.LocalDateTime;
 @Builder
 @EnableJpaAuditing // Auditing 활성화
 @EntityListeners(AuditingEntityListener.class) // Auditing 리스너 등록
-public class User {
+public class Qna {
 
-    /*
-       fixme : 데이터모델링 전 , db 연동 테스트를 위한 IDX 값 생성
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Id;
 
     @Column
-    private Long kakaoId;
+    private Long userId;
 
     @Column
-    private String userName;
+    private String title;
 
     @Column
-    private String nickName;
-
-    @Column
-    private String email;
-
-    @Column
-    private String profileImgUrl;
-
-    @Column
-    private String intro;
+    private String contents;
 
     @Column
     @LastModifiedDate // 수정 시간 자동 업데이트
@@ -51,5 +38,6 @@ public class User {
     @Column(updatable = false)
     @CreatedDate // 등록 시간 자동 업데이트
     private LocalDateTime regTime;
+
 
 }
