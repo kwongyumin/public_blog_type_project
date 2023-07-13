@@ -32,7 +32,7 @@ public class Blog {
     @Column
     private String contents;
 
-    // FIXE : 카테고리와 연관관계 추가 , many to one
+    // fixme : 카테고리와 연관관계 추가 , many to one
 
     @Column
     @LastModifiedDate // 수정 시간 자동 업데이트

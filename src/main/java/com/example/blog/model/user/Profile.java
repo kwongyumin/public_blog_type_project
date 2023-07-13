@@ -1,6 +1,5 @@
-package com.example.blog.model.category;
+package com.example.blog.model.user;
 
-import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -17,19 +16,19 @@ import java.time.LocalDateTime;
 @Builder
 @EnableJpaAuditing // Auditing 활성화
 @EntityListeners(AuditingEntityListener.class) // Auditing 리스너 등록
-public class Category {
+public class Profile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
+
+    // fixme : User 연관관계 추가
 
     @Column
-    private String categoryName;
+    private String profileImgUrl;
 
     @Column
-    private String color;
-
-    // fixme : Blog 와 연관관걔 추가 필요 , one to many
+    private String intro;
 
     @Column
     @LastModifiedDate // 수정 시간 자동 업데이트

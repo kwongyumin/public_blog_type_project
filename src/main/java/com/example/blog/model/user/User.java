@@ -38,11 +38,10 @@ public class User {
     @Column
     private String email;
 
+    // fixme :: enum 으로 변경
     @Column
-    private String profileImgUrl;
+    private String loginType;
 
-    @Column
-    private String intro;
 
     @Column
     @LastModifiedDate // 수정 시간 자동 업데이트
