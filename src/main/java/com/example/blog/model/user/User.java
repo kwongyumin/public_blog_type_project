@@ -1,6 +1,7 @@
 package com.example.blog.model.user;
 
 
+import com.example.blog.dto.user.UserRequestDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -26,8 +27,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // fixme :: naver 추가 예정, sns 로그인 관련 테이블 분리에 대한 생각 필요
+
     @Column
     private Long kakaoId;
+
+    @Column
+    private LoginType loginType;
 
     @Column
     private String userName;
@@ -36,12 +42,10 @@ public class User {
     private String nickName;
 
     @Column
-    private String email;
+    private String password;
 
-    // fixme :: enum 으로 변경
     @Column
-    private String loginType;
-
+    private String email;
 
     @Column
     @LastModifiedDate // 수정 시간 자동 업데이트
@@ -51,4 +55,23 @@ public class User {
     @CreatedDate // 등록 시간 자동 업데이트
     private LocalDateTime regTime;
 
+    // fixme : 우선 로그인 타입별 셋팅 구조 -> 카카오 로그인 추가 후 다시 생각 필요
+    public static User setDefaultUser(UserRequestDto.JoinUser requestDto){
+        return User.builder()
+                .loginType(LoginType.DEFAULT)
+                .userName(requestDto.getUserName())
+                .nickName(requestDto.getNickName())
+                .password(requestDto.getPassword())
+                .email(requestDto.getEmail())
+                .build();
+    }
+    public static User setKakaoUser(){
+        return User.builder()
+                .build();
+    }
+}
+
+// 로그인 타입 관리
+enum LoginType {
+    DEFAULT , KAKAO , NAVER
 }
