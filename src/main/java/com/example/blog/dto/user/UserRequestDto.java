@@ -1,6 +1,7 @@
 package com.example.blog.dto.user;
 
 
+import com.example.blog.model.user.LoginType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

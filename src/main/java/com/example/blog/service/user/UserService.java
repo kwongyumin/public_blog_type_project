@@ -9,6 +9,6 @@ public interface UserService {
     /*
         유저 정보 저장 (회원가입 처리 및 토큰 발급)
      */
-    UserResponseDto.JoinUser saveUser(UserRequestDto.JoinUser requestDto) throws Exception;
+    UserResponseDto.JoinUser saveUser(UserRequestDto.JoinUser requestDto);
 
 }

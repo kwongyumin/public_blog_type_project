@@ -14,8 +14,6 @@ public class UserResponseDto {
     public static class JoinUser {
 
         private Long userId;
-
-        private String accessToken;
         // fixme : 회원가입 후 return URL 어떻게 관리할지 생각하기.
         private String returnUrl;
     }

@@ -12,7 +12,7 @@ import lombok.Getter;
 public enum SuccessCode {
 
     /**
-     * ******************************* Success CodeList ***************************************
+     * ******************************* Default Success CodeList (response) ***************************************
      */
     // 조회 성공 코드 (HTTP Response: 200 OK)
     SELECT_SUCCESS(200, "200", "SELECT SUCCESS"),
@@ -23,6 +23,10 @@ public enum SuccessCode {
     // 수정 성공 코드 (HTTP Response: 201 Created)
     UPDATE_SUCCESS(204, "204", "UPDATE SUCCESS"),
 
+    /**
+     * ******************************* Login Success CodeList (debug) ***************************************
+     * NOTE : 디버깅을 위한 코드 리스트 , 좀 더 생각해보기!.
+     */
     ; // End
 
     /**

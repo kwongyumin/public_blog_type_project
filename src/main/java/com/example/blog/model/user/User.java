@@ -70,8 +70,3 @@ public class User {
                 .build();
     }
 }
-
-// 로그인 타입 관리
-enum LoginType {
-    DEFAULT , KAKAO , NAVER
-}
