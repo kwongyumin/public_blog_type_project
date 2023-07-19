@@ -41,6 +41,9 @@ dependencies {
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
     // 최초 예외 발생 시 , 조상 예외 식별
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+    // swagger 2.x.x ver 추가
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 }
 
 tasks.named('test') {
