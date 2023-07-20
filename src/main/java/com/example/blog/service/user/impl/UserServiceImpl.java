@@ -1,7 +1,6 @@
 package com.example.blog.service.user.impl;
 
 import com.example.blog.common.codes.SuccessCode;
-import com.example.blog.common.response.ApiResult;
 import com.example.blog.dto.user.UserRequestDto;
 import com.example.blog.dto.user.UserResponseDto;
 import com.example.blog.model.user.User;
