@@ -56,11 +56,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     private UsernamePasswordAuthenticationToken getAuthRequest(HttpServletRequest request) throws Exception {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
+            objectMapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true); // JSON 파싱 시 자원을 자동으로 닫도록 기능 설정
             User user = objectMapper.readValue(request.getInputStream(), User.class);
             log.debug("1.CustomAuthenticationFilter :: userId:" + user.getId() + " userPw:" + user.getPassword());
 
-            // ID와 패스워드를 기반으로 토큰 발급
+            // ID (idx) 와 패스워드를 기반으로 토큰 발급
             return new UsernamePasswordAuthenticationToken(user.getId(), user.getPassword());
         } catch (UsernameNotFoundException ae) {
             throw new UsernameNotFoundException(ae.getMessage());
