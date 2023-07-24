@@ -15,9 +15,14 @@ public class UserRequestDto {
     @Builder
     public static class LoginUser {
 
-        private String email;
-
-        private String password;
+        // 사용자 시퀀스
+        private Long userId;
+        // 사용자 이름
+        private String userName;
+        // 사용자 아이디
+        private String userEmail;
+        // 사용자 패스워드
+        private String userPassword;
 
     }
 
@@ -29,9 +34,9 @@ public class UserRequestDto {
 
         private String nickName;
 
-        private String password;
-
         private String email;
+
+        private String password;
 
         private String intro;
     }

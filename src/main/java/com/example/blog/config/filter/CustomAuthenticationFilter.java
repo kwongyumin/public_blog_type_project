@@ -1,6 +1,6 @@
 package com.example.blog.config.filter;
 
-import com.example.blog.model.user.User;
+import com.example.blog.dto.user.UserRequestDto;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -57,11 +57,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true); // JSON 파싱 시 자원을 자동으로 닫도록 기능 설정
-            User user = objectMapper.readValue(request.getInputStream(), User.class);
-            log.debug("1.CustomAuthenticationFilter :: userId:" + user.getId() + " userPw:" + user.getPassword());
+            UserRequestDto.LoginUser user = objectMapper.readValue(request.getInputStream(), UserRequestDto.LoginUser.class);
+            log.debug("1.CustomAuthenticationFilter :: userEmail:" + user.getUserEmail() + " userPw:" + user.getUserPassword());
 
-            // ID (idx) 와 패스워드를 기반으로 토큰 발급
-            return new UsernamePasswordAuthenticationToken(user.getId(), user.getPassword());
+            // ID (userEmail) 와 패스워드를 기반으로 토큰 발급
+            return new UsernamePasswordAuthenticationToken(user.getUserEmail(), user.getUserPassword());
         } catch (UsernameNotFoundException ae) {
             throw new UsernameNotFoundException(ae.getMessage());
         } catch (Exception e) {

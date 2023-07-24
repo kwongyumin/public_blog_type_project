@@ -36,8 +36,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) authentication;
 
         // 'AuthenticaionFilter' 에서 생성된 토큰으로부터 아이디와 비밀번호를 조회함
-        String userId = token.getName(); // fixme : 내용물 확인 필요
-        String userPw = (String) token.getCredentials();
+        String userId = token.getName(); // fixme : 필터에서는 principal 을 email 로 잡음 userId 를 eamil 로 잡았을 때의 문제점 확인 필요.
+        String userPw = (String) token.getCredentials(); // 비밀번호
 
         // Spring Security - UserDetailsService를 통해 DB에서 아이디로 사용자 조회
         UserDetailsDto userDetailsDto = (UserDetailsDto) userDetailsService.loadUserByUsername(userId);

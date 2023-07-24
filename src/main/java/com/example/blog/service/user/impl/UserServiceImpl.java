@@ -20,6 +20,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public UserResponseDto.LoginUser loginUser(UserRequestDto.LoginUser requestDto) {
+        UserResponseDto.LoginUser result = null;
+        // FIXME : 유저 확인 및 토큰 발급처리
+
+        return result;
+    }
+
+    @Override
+    @Transactional
     public UserResponseDto.JoinUser saveUser(UserRequestDto.JoinUser requestDto) {
         UserResponseDto.JoinUser result = null;
         User defaultUser = User.setDefaultUser(requestDto);
