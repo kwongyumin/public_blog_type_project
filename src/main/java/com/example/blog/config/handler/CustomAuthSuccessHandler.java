@@ -1,6 +1,8 @@
 package com.example.blog.config.handler;
 
+import com.example.blog.common.constants.AuthConstants;
 import com.example.blog.common.util.ConvertUtil;
+import com.example.blog.common.util.TokenUtils;
 import com.example.blog.dto.user.UserDetailsDto;
 import com.example.blog.dto.user.UserDto;
 import com.example.blog.dto.user.UserRequestDto;
@@ -51,21 +53,16 @@ public class CustomAuthSuccessHandler extends SavedRequestAwareAuthenticationSuc
         // [STEP3-2] 사용자의 상태가 '휴면 상태'가 아닌 경우 응답 값으로 전달 할 데이터
 
         // 1. 일반 계정일 경우 데이터 세팅
-        if(userVoObj != null && !userVoObj.isEmpty()){
-            responseMap.put("userInfo", userVoObj);
-            responseMap.put("resultCode", 200);
-            responseMap.put("failMsg", null);
-        } else {
-            // FIXME : 로그인 얘외 핸들링 필요
-            // throw new RuntimeException();
-        }
+        responseMap.put("userInfo", userVoObj);
+        responseMap.put("resultCode", 200);
+        responseMap.put("failMsg", null);
 
         jsonObject = new JSONObject(responseMap);
 
         // TODO: 추후 JWT 발급에 사용 할 예정
-        // String token = TokenUtils.generateJwtToken(userVo);
-        // jsonObject.put("token", token);
-        // response.addHeader(AuthConstants.AUTH_HEADER, AuthConstants.TOKEN_TYPE + " " + token);
+         String token = TokenUtils.generateJwtToken(userDto);
+         jsonObject.put("token", token);
+         response.addHeader(AuthConstants.AUTH_HEADER, AuthConstants.TOKEN_TYPE + " " + token);
 
         // [STEP4] 구성한 응답 값을 전달합니다.
         response.setCharacterEncoding("UTF-8");
@@ -74,10 +71,6 @@ public class CustomAuthSuccessHandler extends SavedRequestAwareAuthenticationSuc
         printWriter.print(jsonObject);  // 최종 저장된 '사용자 정보', '사이트 정보' Front 전달
         printWriter.flush();
         printWriter.close();
-
-        /**
-         * FIXME : 응답 구조 변경
-         */
 
 
     }

@@ -1,5 +1,6 @@
 package com.example.blog.common.util;
 
+import com.example.blog.dto.user.UserRequestDto;
 import com.example.blog.model.user.User;
 import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
@@ -25,16 +26,16 @@ public class TokenUtils {
     /**
      * 사용자 정보를 기반으로 토큰을 생성하여 반환 해주는 메서드
      *
-     * @param user User : 사용자 정보
+     * @param  userDto : 사용자 정보
      *             // FIMXE : 계층 간 데이터 이동방식을 고려 , entity -> dto 매핑 방식 추가 및 수정 필요
      * @return String : 토큰
      */
-    public static String generateJwtToken(User user) {
+    public static String generateJwtToken(UserRequestDto.LoginUser userDto) {
         // 사용자 시퀀스를 기준으로 JWT 토큰을 발급하여 반환해줍니다.
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())                              // Header 구성
-                .setClaims(createClaims(user))                       // Payload - Claims 구성
-                .setSubject(String.valueOf(user.getId()))        // Payload - Subject 구성
+                .setClaims(createClaims(userDto))                       // Payload - Claims 구성
+                .setSubject(String.valueOf(userDto.getUserEmail()))        // Payload - Subject 구성
                 .signWith(SignatureAlgorithm.HS256, createSignature())  // Signature 구성
                 .setExpiration(createExpiredDate());                    // Expired Date 구성
         return builder.compact();
@@ -125,12 +126,12 @@ public class TokenUtils {
      * @param user 사용자 정보
      * @return Map<String, Object>
      */
-    private static Map<String, Object> createClaims(User user) {
+    private static Map<String, Object> createClaims(UserRequestDto.LoginUser userDto) {
         // 공개 클레임에 사용자의 이름과 이메일을 설정하여 정보를 조회할 수 있다.
         Map<String, Object> claims = new HashMap<>();
 
-        log.info("userId :" + user.getId());
-        log.info("userNm :" + user.getEmail());
+        log.info("userId :" + userDto.getUserEmail());
+        log.info("userNm :" + userDto.getUserName());
         // NOTE : user pk 와 로그인 id 값인 이메일값을 클레임 셋팅
         claims.put("userId", user.getId());
         claims.put("userNm", user.getEmail());
