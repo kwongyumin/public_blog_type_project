@@ -123,7 +123,7 @@ public class TokenUtils {
     /**
      * 사용자 정보를 기반으로 클래임을 생성해주는 메서드
      *
-     * @param user 사용자 정보
+     * @param userDto 사용자 정보
      * @return Map<String, Object>
      */
     private static Map<String, Object> createClaims(UserRequestDto.LoginUser userDto) {
@@ -133,8 +133,8 @@ public class TokenUtils {
         log.info("userId :" + userDto.getUserEmail());
         log.info("userNm :" + userDto.getUserName());
         // NOTE : user pk 와 로그인 id 값인 이메일값을 클레임 셋팅
-        claims.put("userId", user.getId());
-        claims.put("userNm", user.getEmail());
+        claims.put("userId", userDto.getUserEmail());
+        claims.put("userNm",userDto.getUserName());
         return claims;
     }
 
@@ -164,7 +164,7 @@ public class TokenUtils {
      * 토큰을 기반으로 사용자 정보를 반환받는 메서드
      *
      * @param token : 토큰
-     * @return String : 사용자 아이디
+     * @return String : 사용자 아이디 (이메일)
      */
     public static String getUserIdFromToken(String token) {
         Claims claims = getClaimsFormToken(token);
