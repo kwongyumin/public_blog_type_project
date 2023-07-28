@@ -52,6 +52,17 @@ public enum ErrorCode {
     // @RequestBody 및 @RequestParam, @PathVariable 값이 유효하지 않음
     NOT_VALID_HEADER_ERROR(404, "E012", "Header에 데이터가 존재하지 않는 경우 "),
 
+    // NOTE : 토큰 100번대
+    // 토큰이 유효하지 않음
+    TOKEN_EXPIRED(401 , "E101" ,"TOKEN Expired" ),
+    // JWT 허용된 토큰이 아님
+    TOKEN_SIGNATURE_EXCEPTION_LOGIN(401 , "E102" ,"TOKEN SignatureException Login" ),
+    // JWT 토큰내에서 오류 발생 시
+    TOKEN_PARSING_JWT_EXCEPTION(401 , "E103" ,"TOKEN Parsing JwtException" ),
+    // 이외 JTW 토큰내에서 오류 발생
+    OTHER_TOKEN_ERROR(401 , "E104" ,"OTHER TOKEN ERROR" ),
+
+
     // 서버가 처리 할 방법을 모르는 경우 발생
     INTERNAL_SERVER_ERROR(500, "E999", "Internal Server Error Exception"),
 
