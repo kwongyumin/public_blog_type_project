@@ -2,6 +2,13 @@ package com.example.blog.common.codes;
 
 import lombok.Getter;
 
+/**
+ * [공통 코드] API 통신에 대한 '에러 코드'를 Enum 형태로 관리를 한다.
+ * Global Error CodeList : 전역으로 발생하는 에러코드를 관리한다.
+ * Custom Error CodeList : 업무 페이지에서 발생하는 에러코드를 관리한다
+ * Error Code Constructor : 에러코드를 직접적으로 사용하기 위한 생성자를 구성한다.
+ *
+ */
 @Getter
 public enum ErrorCode {
 
@@ -65,7 +72,8 @@ public enum ErrorCode {
 
     // 서버가 처리 할 방법을 모르는 경우 발생
     INTERNAL_SERVER_ERROR(500, "E999", "Internal Server Error Exception"),
-
+    //
+    BUSINESS_EXCEPTION_ERROR(200, "B999", "Business Exception Error"),
 
     /**
      * ******************************* Custom Error CodeList ***************************************

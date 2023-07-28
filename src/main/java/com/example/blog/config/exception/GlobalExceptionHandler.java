@@ -31,6 +31,19 @@ public class GlobalExceptionHandler {
     private final HttpStatus HTTP_STATUS_OK = HttpStatus.OK;
 
     /**
+     * BusinessException에서 발생한 에러
+     *
+     * @param ex BusinessException
+     * @return ResponseEntity
+     */
+    @ExceptionHandler(BusinessExceptionHandler.class)
+    public ResponseEntity<ErrorResponse> handleCustomException(BusinessExceptionHandler ex) {
+        log.error("BusinessExceptionHandler", ex);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.BUSINESS_EXCEPTION_ERROR, ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
      * [Exception] API 호출 시 '객체' 혹은 '파라미터' 데이터 값이 유효하지 않은 경우
      *
      * @param ex MethodArgumentNotValidException
