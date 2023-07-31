@@ -25,8 +25,12 @@ public enum SuccessCode {
 
     /**
      * ******************************* Login Success CodeList (debug) ***************************************
-     * NOTE : 디버깅을 위한 코드 리스트 , 좀 더 생각해보기!.
      */
+    LOGIN_SUCCESS(200, "200","LOGIN_SUCCESS") ,
+    JOIN_SUCCESS(200, "200","JOIN_SUCCESS") ,
+
+
+
     ; // End
 
     /**

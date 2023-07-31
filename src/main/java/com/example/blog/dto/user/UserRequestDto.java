@@ -1,7 +1,6 @@
 package com.example.blog.dto.user;
 
 
-import com.example.blog.model.user.LoginType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,7 +13,6 @@ public class UserRequestDto {
     @Getter
     @Builder
     public static class LoginUser {
-
         // 사용자 시퀀스
         private Long userId;
         // 사용자 이름
@@ -29,7 +27,7 @@ public class UserRequestDto {
     @Getter
     @Builder
     public static class JoinUser {
-
+        // 파라미터 필수 여부 체크 필요
         private String userName;
 
         private String nickName;

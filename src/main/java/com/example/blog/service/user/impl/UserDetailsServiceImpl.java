@@ -28,9 +28,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .userEmail(userEmail)
                 .build();
 
-        // FIXME : 로그인만 optional 처리 하는 것이 맞는것인지? 전체적인 코드 컨벤선 생각해서 결과반환 다시 생각!
+        // FIXME : 로그인만 optional 처리 하는 것이 맞는것인지? 전체적인 코드 컨벤선 생각해서 결과반환 다시 생각!\
         // 사용자 정보가 존재하지 않는 경우
         if (userEmail == null || userEmail.equals("")) {
+            // FIXME : 조금 더 생각해보기 ...
 //            return userService.loginUser(userDto)
 //                    .map(u -> new UserDetailsDto(u, Collections.singleton(new SimpleGrantedAuthority(u.getUserId()))))
 //                    .orElseThrow(() -> new AuthenticationServiceException(userEmail));

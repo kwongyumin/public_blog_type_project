@@ -35,13 +35,7 @@ public class CustomAuthSuccessHandler extends SavedRequestAwareAuthenticationSuc
         UserRequestDto.LoginUser userDto = ((UserDetailsDto) authentication.getPrincipal()).getUserDto();
 
         // [STEP2] 조회한 데이터를 JSONObject 형태로 파싱을 수행합니다.
-        JSONObject userVoObj = null;
-        // fixme : 수정 필요
-        try {
-            userVoObj = ConvertUtil.convertObjectToJsonObject(userDto);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+        JSONObject userVoObj = (JSONObject) ConvertUtil.convertObjectToJsonObject(userDto);
 
         HashMap<String, Object> responseMap = new HashMap<>();
 
@@ -60,9 +54,9 @@ public class CustomAuthSuccessHandler extends SavedRequestAwareAuthenticationSuc
         jsonObject = new JSONObject(responseMap);
 
         // TODO: 추후 JWT 발급에 사용 할 예정
-         String token = TokenUtils.generateJwtToken(userDto);
-         jsonObject.put("token", token);
-         response.addHeader(AuthConstants.AUTH_HEADER, AuthConstants.TOKEN_TYPE + " " + token);
+        String token = TokenUtils.generateJwtToken(userDto);
+        jsonObject.put("token", token);
+        response.addHeader(AuthConstants.AUTH_HEADER, AuthConstants.TOKEN_TYPE + " " + token);
 
         // [STEP4] 구성한 응답 값을 전달합니다.
         response.setCharacterEncoding("UTF-8");

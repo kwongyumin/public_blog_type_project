@@ -1,6 +1,9 @@
 package com.example.blog.service.user.impl;
 
+import com.example.blog.common.codes.ErrorCode;
 import com.example.blog.common.codes.SuccessCode;
+import com.example.blog.common.response.ApiResult;
+import com.example.blog.config.exception.BusinessExceptionHandler;
 import com.example.blog.dto.user.UserRequestDto;
 import com.example.blog.dto.user.UserResponseDto;
 import com.example.blog.model.user.User;
@@ -21,23 +24,20 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto.LoginUser loginUser(UserRequestDto.LoginUser requestDto) {
-        UserResponseDto.LoginUser result = null;
-        // FIXME : 유저 확인 및 토큰 발급처리
-
-        return result;
+        return null;
     }
 
     @Override
     @Transactional
     public UserResponseDto.JoinUser saveUser(UserRequestDto.JoinUser requestDto) {
-        UserResponseDto.JoinUser result = null;
         User defaultUser = User.setDefaultUser(requestDto);
-        // NOTE : exceptionHandler 테스트 필요
         defaultUser = userRepository.save(defaultUser);
+        if (defaultUser.getId() < 0) {
+           throw new BusinessExceptionHandler(ErrorCode.INSERT_ERROR.getMessage(), ErrorCode.INSERT_ERROR);
+        }
         log.info("[USER_SERVICE] METHOD_SAVE_USER :: " + SuccessCode.INSERT_SUCCESS.getMessage() + " USER_ID : " + defaultUser.getId());
-        // FIXME : 로그인 유도 URL 필요 여부 홗인 후 수정
-        result = new UserResponseDto.JoinUser(defaultUser.getId(), "defaultUrl");
-        return result;
+
+        return new UserResponseDto.JoinUser(defaultUser.getId(), "defaultUrl");
     }
 
 

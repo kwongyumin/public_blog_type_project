@@ -1,10 +1,9 @@
 package com.example.blog.service.user;
 
 
+import com.example.blog.common.response.ApiResult;
 import com.example.blog.dto.user.UserRequestDto;
 import com.example.blog.dto.user.UserResponseDto;
-
-import java.util.Optional;
 
 public interface UserService {
 

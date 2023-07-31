@@ -10,8 +10,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.function.EntityResponse;
 
 @Api(tags = {"USER API"})
 @RestController
@@ -22,36 +25,33 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * Desc : 유저 로그인 처리 (일반 유저 대상)
-     * @param loginUserRequestDto
-     * @return
+     * @param loginUserRequestDto UserRequestDto.LoginUser
+     * @return ApiResponseWrapper<ApiResponse> : 응답 결과 및 응답 코드 반환
      */
     @PostMapping(value = "/login" , produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "일반 회원 로그인 처리" , notes = "일반 회원의 로그인 요청을 처리한다", httpMethod = "POST")
+    @ApiOperation(value = "로그인 및 토큰발급 요청" , notes = "일반 회원의 로그인 요청을 처리하며 토큰을 발급한다", httpMethod = "POST")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success", response = UserResponseDto.LoginUser.class)
     })
-    public ApiResult loginUser(@RequestBody UserRequestDto.LoginUser loginUserRequestDto) {
-
-
-
-        return null;
+    public ResponseEntity<ApiResult> loginUser(@RequestBody UserRequestDto.LoginUser loginUserRequestDto) {
+        UserResponseDto.LoginUser result  = userService.loginUser(loginUserRequestDto);
+        ApiResult data = new ApiResult(result,SuccessCode.LOGIN_SUCCESS.getStatus(),SuccessCode.LOGIN_SUCCESS.getMessage());
+        return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     /**
-     * Desc : 회원가입 요청 처리 (일반 유저 대상)
-     * @param userJoinRequestDto
-     * @return
+     * @param userJoinRequestDto UserResponseDto.JoinUser
+     * @return ApiResponseWrapper<ApiResponse> : 응답 결과 및 응답 코드 반환
      */
     @PostMapping(value = "/join" , produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "일반 회원가입 처리 요청" , notes = "서비스 내에서 자체적으로 회원가입 요청을 처리한다.", httpMethod = "POST")
+    @ApiOperation(value = "일반 회원가입 요청" , notes = "서비스 내에서 자체적으로 회원가입 요청을 처리한다.", httpMethod = "POST")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success", response = UserResponseDto.JoinUser.class)
     })
-    public ApiResult saveUser(@RequestBody UserRequestDto.JoinUser userJoinRequestDto){
+    public  ResponseEntity<ApiResult> saveUser(@RequestBody UserRequestDto.JoinUser userJoinRequestDto){
         UserResponseDto.JoinUser result  = userService.saveUser(userJoinRequestDto);
-        // FIXME : 해당 생성자를 더 간결하게 처리하는 방법에 대하여 생각해보자.
-        return new ApiResult(result, SuccessCode.INSERT_SUCCESS.getStatus(),SuccessCode.INSERT_SUCCESS.getMessage());
+        ApiResult data = new ApiResult(result,SuccessCode.JOIN_SUCCESS.getStatus(),SuccessCode.JOIN_SUCCESS.getMessage());
+        return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
 }
