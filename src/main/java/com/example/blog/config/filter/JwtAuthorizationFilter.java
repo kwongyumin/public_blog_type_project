@@ -4,8 +4,10 @@ package com.example.blog.config.filter;
  *  해당 클래스는 Spring Security의 환경설정을 구성하는 단계에서 필터로 등록한 클래스이며, 지정한 URL 별 JWT 유효성 검증을 수행하며 직접적인 사용자 '인증'을 확인합니다.
  */
 
+import com.example.blog.common.codes.ErrorCode;
 import com.example.blog.common.constants.AuthConstants;
 import com.example.blog.common.util.TokenUtils;
+import com.example.blog.config.exception.BusinessExceptionHandler;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import lombok.NonNull;
@@ -75,16 +77,16 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     if (userEmail != null && !userEmail.equalsIgnoreCase("")) {
                         chain.doFilter(request, response);
                     } else {
-                       // throw new BusinessExceptionHandler("TOKEN isn't userId", ErrorCode.BUSINESS_EXCEPTION_ERROR);
+                        throw new BusinessExceptionHandler("TOKEN isn't userId", ErrorCode.BUSINESS_EXCEPTION_ERROR);
                     }
                     // 토큰이 유효하지 않은 경우
                 } else {
-                   // throw new BusinessExceptionHandler("TOKEN is invalid", ErrorCode.BUSINESS_EXCEPTION_ERROR);
+                    throw new BusinessExceptionHandler("TOKEN is invalid", ErrorCode.BUSINESS_EXCEPTION_ERROR);
                 }
             }
             // [STEP2-1] 토큰이 존재하지 않는 경우
             else {
-               // throw new BusinessExceptionHandler("Token is null", ErrorCode.BUSINESS_EXCEPTION_ERROR);
+                throw new BusinessExceptionHandler("Token is null", ErrorCode.BUSINESS_EXCEPTION_ERROR);
             }
         } catch (Exception e) {
             // Token 내에 Exception이 발생 하였을 경우 => 클라이언트에 응답값을 반환하고 종료합니다.

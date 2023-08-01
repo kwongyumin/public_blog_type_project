@@ -1,13 +1,16 @@
-package com.example.blog.dto.user;
+package com.example.blog.vo.user;
 
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Builder
 @Getter
 @AllArgsConstructor
-public class UserDto {
+public class UserVo {
+
+    // NOTE : read-only user-data
 
     // 사용자 시퀀스
     private Long userId;
@@ -21,3 +24,4 @@ public class UserDto {
 
 
 }
+

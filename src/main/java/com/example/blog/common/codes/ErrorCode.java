@@ -79,6 +79,7 @@ public enum ErrorCode {
      * ******************************* Custom Error CodeList ***************************************
      */
     // Transaction Insert Error
+    SELECT_ERROR(200, "9999", "select Transaction Error Exception"),
     INSERT_ERROR(200, "9999", "Insert Transaction Error Exception"),
 
     // Transaction Update Error

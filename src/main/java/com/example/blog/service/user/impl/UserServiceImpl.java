@@ -24,6 +24,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto.LoginUser loginUser(UserRequestDto.LoginUser requestDto) {
+        // FIXME : 변수명에 대한 고찰이 필요할 듯 하다...
+
+        // ## STEP 1. 로그인 유저의 정보 조회
+        UserResponseDto.LoginUser findUserByEmail = userRepository.findLoginUserByEmail(requestDto.getUserEmail());
+        if (findUserByEmail == null){
+           // 로그인 정보가 없을 때 , -> 회원가입 페이지로 유도 필요
+        }
+        // ## STEP 2. 로그인 유저의 정보가 조회 된다면 ,
+        
+
         return null;
     }
 

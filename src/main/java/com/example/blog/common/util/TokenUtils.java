@@ -35,7 +35,7 @@ public class TokenUtils {
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())                              // Header 구성
                 .setClaims(createClaims(userDto))                       // Payload - Claims 구성
-                .setSubject(String.valueOf(userDto.getUserEmail()))        // Payload - Subject 구성
+                .setSubject(String.valueOf(userDto.getUserEmail()))        // Payload - Subject 구성 , FIXME: 사이드 이펙트 고려
                 .signWith(SignatureAlgorithm.HS256, createSignature())  // Signature 구성
                 .setExpiration(createExpiredDate());                    // Expired Date 구성
         return builder.compact();
@@ -67,7 +67,8 @@ public class TokenUtils {
             Claims claims = getClaimsFormToken(token);
 
             log.info("expireTime :" + claims.getExpiration());
-            log.info("userId :" + claims.get("userId"));
+            log.info("userPk :" + claims.get("userPk") );
+            log.info("userEmail :" + claims.get("userEmail"));
             log.info("userNm :" + claims.get("userNm"));
 
             return true;
@@ -130,10 +131,12 @@ public class TokenUtils {
         // 공개 클레임에 사용자의 이름과 이메일을 설정하여 정보를 조회할 수 있다.
         Map<String, Object> claims = new HashMap<>();
 
-        log.info("userId :" + userDto.getUserEmail());
+        log.info("userPk :" + userDto.getUserId() );
+        log.info("userEmail :" + userDto.getUserEmail());
         log.info("userNm :" + userDto.getUserName());
-        // NOTE : user pk 와 로그인 id 값인 이메일값을 클레임 셋팅
-        claims.put("userId", userDto.getUserEmail());
+        // NOTE : user pk 와 로그인 id 값인 이메일값을 클레임 셋팅 , 필요에 의해 추가 예정
+        claims.put("userPk", userDto.getUserId());
+        claims.put("userEmail", userDto.getUserEmail());
         claims.put("userNm",userDto.getUserName());
         return claims;
     }
