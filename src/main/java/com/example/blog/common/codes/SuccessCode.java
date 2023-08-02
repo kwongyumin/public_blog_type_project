@@ -29,8 +29,6 @@ public enum SuccessCode {
     LOGIN_SUCCESS(200, "200","LOGIN_SUCCESS") ,
     JOIN_SUCCESS(200, "200","JOIN_SUCCESS") ,
 
-
-
     ; // End
 
     /**

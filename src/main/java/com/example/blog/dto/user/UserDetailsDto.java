@@ -13,7 +13,7 @@ import java.util.Collection;
 public class UserDetailsDto implements UserDetails {
 
     @Delegate
-    private UserRequestDto.LoginUser userDto;
+    private UserDto userDto;
     private Collection<? extends GrantedAuthority> authorities;
 
     @Override

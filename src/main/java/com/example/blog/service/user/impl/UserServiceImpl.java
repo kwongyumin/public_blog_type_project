@@ -2,8 +2,8 @@ package com.example.blog.service.user.impl;
 
 import com.example.blog.common.codes.ErrorCode;
 import com.example.blog.common.codes.SuccessCode;
-import com.example.blog.common.response.ApiResult;
 import com.example.blog.config.exception.BusinessExceptionHandler;
+import com.example.blog.dto.user.UserDto;
 import com.example.blog.dto.user.UserRequestDto;
 import com.example.blog.dto.user.UserResponseDto;
 import com.example.blog.model.user.User;
@@ -14,27 +14,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    // FIXME : 로그인 구현체 , 토큰 발급기능과 분리 처리
     @Override
-    @Transactional
-    public UserResponseDto.LoginUser loginUser(UserRequestDto.LoginUser requestDto) {
-        // FIXME : 변수명에 대한 고찰이 필요할 듯 하다...
-
-        // ## STEP 1. 로그인 유저의 정보 조회
-        UserResponseDto.LoginUser findUserByEmail = userRepository.findLoginUserByEmail(requestDto.getUserEmail());
-        if (findUserByEmail == null){
-           // 로그인 정보가 없을 때 , -> 회원가입 페이지로 유도 필요
-        }
-        // ## STEP 2. 로그인 유저의 정보가 조회 된다면 ,
-        
-
-        return null;
+    public Optional<UserDto> loginUser(UserDto userDto) {
+        return userRepository.findLoginUserByEmail(userDto.getUserEmail());
     }
 
     @Override
@@ -49,6 +41,7 @@ public class UserServiceImpl implements UserService {
 
         return new UserResponseDto.JoinUser(defaultUser.getId(), "defaultUrl");
     }
+
 
 
 

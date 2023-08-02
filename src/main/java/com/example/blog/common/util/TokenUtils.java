@@ -1,7 +1,9 @@
 package com.example.blog.common.util;
 
+import com.example.blog.dto.user.UserDto;
 import com.example.blog.dto.user.UserRequestDto;
 import com.example.blog.model.user.User;
+import com.example.blog.vo.user.UserVo;
 import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
 
@@ -30,7 +32,7 @@ public class TokenUtils {
      *             // FIMXE : 계층 간 데이터 이동방식을 고려 , entity -> dto 매핑 방식 추가 및 수정 필요
      * @return String : 토큰
      */
-    public static String generateJwtToken(UserRequestDto.LoginUser userDto) {
+    public static String generateJwtToken(UserDto userDto) {
         // 사용자 시퀀스를 기준으로 JWT 토큰을 발급하여 반환해줍니다.
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())                              // Header 구성
@@ -127,7 +129,7 @@ public class TokenUtils {
      * @param userDto 사용자 정보
      * @return Map<String, Object>
      */
-    private static Map<String, Object> createClaims(UserRequestDto.LoginUser userDto) {
+    private static Map<String, Object> createClaims(UserDto userDto) {
         // 공개 클레임에 사용자의 이름과 이메일을 설정하여 정보를 조회할 수 있다.
         Map<String, Object> claims = new HashMap<>();
 
@@ -171,7 +173,7 @@ public class TokenUtils {
      */
     public static String getUserIdFromToken(String token) {
         Claims claims = getClaimsFormToken(token);
-        return claims.get("userId").toString();
+        return claims.get("userEmail").toString();
     }
 
 }

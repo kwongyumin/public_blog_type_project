@@ -1,5 +1,6 @@
 package com.example.blog.dto.user;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,19 +9,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+@ApiModel(description = "로그인 관련 응답 파라미터 관리")
 public class UserResponseDto {
-
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class LoginUser implements Serializable {
-
-        @ApiModelProperty(position = 1 ,  value = "유저 idx", required = true, example = "15")
-        private Long userId;
-        @ApiModelProperty(position = 2 ,  value = "접근토큰", required = true, example = "")
-        private String accessToken;
-    }
 
     @Getter
     @Builder

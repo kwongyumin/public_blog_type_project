@@ -58,13 +58,14 @@ public class WebSecurityConfig {
                 // [STEP1] 서버에 인증정보를 저장하지 않기에 csrf(Cross Site Request Forgery[사이트 간 요청 위조])를 사용하지 않는다.
                 .csrf().disable()
 
-                // [STEP2] 토큰을 활용하는 경우 모든 요청에 대해 '인가'에 대해서 적용
+                // NOTE : [STEP2] 토큰을 활용하는 경우 모든 요청에 대해 '인가'에 대해서 적용
                 .authorizeHttpRequests(authz -> authz.anyRequest().permitAll())
 
                 // [STEP3] Spring Security JWT Filter Load
                 .addFilterBefore(jwtAuthorizationFilter(), BasicAuthenticationFilter.class)
 
                 // [STEP4] Session 기반의 인증기반을 사용하지 않고 추후 JWT를 이용하여서 인증 예정
+                // NOTE : 스프링 시큐리티 세션 기반 옵션을 비활성화
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
@@ -117,6 +118,7 @@ public class WebSecurityConfig {
     @Bean
     public CustomAuthenticationFilter customAuthenticationFilter() {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
+        // FIXME : 세션기반의 인증방식은 사용하지 않을 것이므로 비즈니스 로직만 구현한 상태
         customAuthenticationFilter.setFilterProcessesUrl("/user/login");     // 접근 URL
         customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());    // '인증' 성공 시 해당 핸들러로 처리를 전가한다.
         customAuthenticationFilter.setAuthenticationFailureHandler(customLoginFailureHandler());    // '인증' 실패 시 해당 핸들러로 처리를 전가한다.

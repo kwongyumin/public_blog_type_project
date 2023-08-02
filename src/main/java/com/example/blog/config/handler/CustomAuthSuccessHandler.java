@@ -4,7 +4,7 @@ import com.example.blog.common.constants.AuthConstants;
 import com.example.blog.common.util.ConvertUtil;
 import com.example.blog.common.util.TokenUtils;
 import com.example.blog.dto.user.UserDetailsDto;
-import com.example.blog.dto.user.UserRequestDto;
+import com.example.blog.dto.user.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +30,7 @@ public class CustomAuthSuccessHandler extends SavedRequestAwareAuthenticationSuc
         log.debug("3.CustomLoginSuccessHandler");
 
         // [STEP1] 사용자와 관련된 정보를 모두 조회합니다.
-        UserRequestDto.LoginUser userDto = ((UserDetailsDto) authentication.getPrincipal()).getUserDto();
+        UserDto userDto = ((UserDetailsDto) authentication.getPrincipal()).getUserDto();
 
         // [STEP2] 조회한 데이터를 JSONObject 형태로 파싱을 수행합니다.
         JSONObject userVoObj = (JSONObject) ConvertUtil.convertObjectToJsonObject(userDto);
@@ -51,7 +51,6 @@ public class CustomAuthSuccessHandler extends SavedRequestAwareAuthenticationSuc
 
         jsonObject = new JSONObject(responseMap);
 
-        // TODO: 추후 JWT 발급에 사용 할 예정
         String token = TokenUtils.generateJwtToken(userDto);
         jsonObject.put("token", token);
         response.addHeader(AuthConstants.AUTH_HEADER, AuthConstants.TOKEN_TYPE + " " + token);

@@ -13,8 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.EntityResponse;
+
+import javax.validation.Valid;
 
 @Api(tags = {"USER API"})
 @RestController
@@ -24,20 +26,6 @@ public class UserController {
 
     private final UserService userService;
 
-    /**
-     * @param loginUserRequestDto UserRequestDto.LoginUser
-     * @return ApiResponseWrapper<ApiResponse> : 응답 결과 및 응답 코드 반환
-     */
-    @PostMapping(value = "/login" , produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "로그인 및 토큰발급 요청" , notes = "일반 회원의 로그인 요청을 처리하며 토큰을 발급한다", httpMethod = "POST")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "success", response = UserResponseDto.LoginUser.class)
-    })
-    public ResponseEntity<ApiResult> loginUser(@RequestBody UserRequestDto.LoginUser loginUserRequestDto) {
-        UserResponseDto.LoginUser result  = userService.loginUser(loginUserRequestDto);
-        ApiResult data = new ApiResult(result,SuccessCode.LOGIN_SUCCESS.getStatus(),SuccessCode.LOGIN_SUCCESS.getMessage());
-        return new ResponseEntity<>(data, HttpStatus.OK);
-    }
 
     /**
      * @param userJoinRequestDto UserResponseDto.JoinUser
@@ -48,7 +36,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success", response = UserResponseDto.JoinUser.class)
     })
-    public  ResponseEntity<ApiResult> saveUser(@RequestBody UserRequestDto.JoinUser userJoinRequestDto){
+    public  ResponseEntity<ApiResult> saveUser(@Valid @RequestBody UserRequestDto.JoinUser userJoinRequestDto){
         UserResponseDto.JoinUser result  = userService.saveUser(userJoinRequestDto);
         ApiResult data = new ApiResult(result,SuccessCode.JOIN_SUCCESS.getStatus(),SuccessCode.JOIN_SUCCESS.getMessage());
         return new ResponseEntity<>(data, HttpStatus.OK);
