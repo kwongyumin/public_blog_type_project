@@ -3,7 +3,6 @@ package com.example.blog.common.util;
 import com.example.blog.dto.user.UserDto;
 import com.example.blog.dto.user.UserRequestDto;
 import com.example.blog.model.user.User;
-import com.example.blog.vo.user.UserVo;
 import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
 
