@@ -32,23 +32,24 @@ public class UserDetailsDto implements UserDetails {
         return userDto.getUserEmail();
     }
 
+    // FIXME : Jwt 인증 사용을 위해 true 변환 ->
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

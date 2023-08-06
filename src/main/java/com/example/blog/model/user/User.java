@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -41,11 +43,21 @@ public class User {
     @Column
     private String nickName;
 
+    @Column(unique = true)
+    private String email;
+
     @Column
     private String password;
 
-    @Column
-    private String email;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Authority> roles = new ArrayList<>();
+
+    public void setRoles(List<Authority> role) {
+        this.roles = role;
+        role.forEach(o -> o.setUser(this));
+    }
 
     @Column
     @LastModifiedDate // 수정 시간 자동 업데이트
