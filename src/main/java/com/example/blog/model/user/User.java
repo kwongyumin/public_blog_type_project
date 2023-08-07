@@ -49,15 +49,9 @@ public class User {
     @Column
     private String password;
 
-
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Builder.Default
     private List<Authority> roles = new ArrayList<>();
-
-    public void setRoles(List<Authority> role) {
-        this.roles = role;
-        role.forEach(o -> o.setUser(this));
-    }
 
     @Column
     @LastModifiedDate // 수정 시간 자동 업데이트
@@ -67,15 +61,30 @@ public class User {
     @CreatedDate // 등록 시간 자동 업데이트
     private LocalDateTime regTime;
 
-    // fixme : 우선 로그인 타입별 셋팅 구조 -> 카카오 로그인 추가 후 다시 생각 필요
+    public void setRoles(List<Authority> role) {
+        this.roles = role;
+        role.forEach(o -> o.setUser(this));
+    }
+
+    // FIXME : 우선 로그인 타입별 셋팅 구조 -> 카카오 로그인 추가 후 다시 생각 필요
     public static User setDefaultUser(UserRequestDto.JoinUser requestDto){
-        return User.builder()
+        User user = User.builder()
                 .loginType(LoginType.DEFAULT)
                 .userName(requestDto.getUserName())
                 .nickName(requestDto.getNickName())
                 .password(requestDto.getPassword())
                 .email(requestDto.getEmail())
                 .build();
+
+        // NOTE : 현재 기준으로는 회원 가입 -> 유저 권한을 의미 , 어드민 추가 전 까지는 변동사항 x
+        List<Authority> authList = new ArrayList<>();
+        Authority auth = Authority.builder()
+                .authType(AuthType.USER)
+                .build();
+        authList.add(auth);
+
+        user.setRoles(authList);
+        return user;
     }
     public static User setKakaoUser(){
         return User.builder()

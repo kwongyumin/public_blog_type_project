@@ -1,6 +1,7 @@
 package com.example.blog.dto.user;
 
 
+import com.example.blog.model.user.AuthType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -27,6 +28,10 @@ public class UserRequestDto {
 
         @ApiModelProperty(position = 5 ,  value = "사용자 간단 소개", required = true, example = "")
         private String intro;
+
+//        FIXME : 우선 USER , GUEST 테스트 후 어드민 추가 예정 , 현재 기준으로는 가입은 USER 권한을 가짐.
+//        @ApiModelProperty(position = 6 ,  value = "사용자 권한", required = true, example = "USER")
+//        private AuthType role;
     }
 
 }

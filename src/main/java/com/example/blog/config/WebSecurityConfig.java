@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,7 +30,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Slf4j
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig {
+public class WebSecurityConfig extends WebSecurityConfiguration {
 
     /**
      * 1. 정적 자원(Resource)에 대해서 인증된 사용자가  정적 자원의 접근에 대해 ‘인가’에 대한 설정을 담당하는 메서드이다.
@@ -39,7 +40,9 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         // 정적 자원에 대해서 Security를 적용하지 않음으로 설정
-        return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        return web -> web.ignoring()
+                .antMatchers(CUSTOM_AUTH_WHITELIST)
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
 
@@ -55,11 +58,17 @@ public class WebSecurityConfig {
         log.debug("[+] WebSecurityConfig Start !!! ");
 
         http
+
                 // [STEP1] 서버에 인증정보를 저장하지 않기에 csrf(Cross Site Request Forgery[사이트 간 요청 위조])를 사용하지 않는다.
                 .csrf().disable()
 
                 // NOTE : [STEP2] 토큰을 활용하는 경우 모든 요청에 대해 '인가'에 대해서 적용
-                .authorizeHttpRequests(authz -> authz.anyRequest().permitAll())
+                // FIXME : 회원/ 비회원 권한 설정 필요
+                .authorizeHttpRequests(authz -> authz
+                        .antMatchers("/user/join").permitAll()
+                        .antMatchers("/auth/token").permitAll()
+                        .antMatchers("/api/**").hasAnyRole("USER","GUEST")
+                        .anyRequest().permitAll())
 
                 // [STEP3] Spring Security JWT Filter Load
                 .addFilterBefore(jwtAuthorizationFilter(), BasicAuthenticationFilter.class)
@@ -70,14 +79,15 @@ public class WebSecurityConfig {
 
                 .and()
                 // [STEP5] form 기반의 로그인에 대해 비 활성화하며 커스텀으로 구성한 필터를 사용한다.
-                .formLogin().disable()
+                .formLogin().disable();
 
-                // [STEP6] Spring Security Custom Filter Load - Form '인증'에 대해서 사용
-                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+               // [STEP6] Spring Security Custom Filter Load - Form '인증'에 대해서 사용
+               // .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // [STEP7] 최종 구성한 값을 사용함.
         return http.build();
     }
+
 
     /**
      * 3. authenticate 의 인증 메서드를 제공하는 매니져로'Provider'의 인터페이스를 의미합니다.
@@ -118,8 +128,9 @@ public class WebSecurityConfig {
     @Bean
     public CustomAuthenticationFilter customAuthenticationFilter() {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
-        // FIXME : 세션기반의 인증방식은 사용하지 않을 것이므로 비즈니스 로직만 구현한 상태
-        customAuthenticationFilter.setFilterProcessesUrl("/user/login");     // 접근 URL
+        // NOTE 1: 세션기반의 인증방식은 사용하지 않을 것이므로 비즈니스 로직만 구현한 상태
+        // FIXME 2: JWT 사용 , 세션기반 인증방식 필터 주석 처리
+        customAuthenticationFilter.setFilterProcessesUrl("");     // 접근 URL
         customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());    // '인증' 성공 시 해당 핸들러로 처리를 전가한다.
         customAuthenticationFilter.setAuthenticationFailureHandler(customLoginFailureHandler());    // '인증' 실패 시 해당 핸들러로 처리를 전가한다.
         customAuthenticationFilter.afterPropertiesSet();
@@ -155,6 +166,24 @@ public class WebSecurityConfig {
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
         return new JwtAuthorizationFilter();
     }
+
+    /**
+     * 정적 파일 요청 무시
+     */
+    private static final String[] CUSTOM_AUTH_WHITELIST = {
+            "/v2/api-docs",
+            "/v3/api-docs/**",
+            "/configuration/ui",
+            "/swagger-resources/**",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            "/file/**",
+            "/image/**",
+            "/swagger/**",
+            "/swagger-ui/**",
+            "/h2/**"
+    };
 
 
 }

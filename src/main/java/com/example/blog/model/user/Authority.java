@@ -2,10 +2,13 @@ package com.example.blog.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -21,14 +24,31 @@ public class Authority {
     @JsonIgnore
     private Long id;
 
-    private String name;
+    private AuthType authType;
 
     @JoinColumn(name = "user")
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private User user;
 
+    @JoinColumn(name = "guest")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Guest guest;
+
+    @Column
+    @LastModifiedDate // 수정 시간 자동 업데이트
+    private LocalDateTime modTime;
+
+    @Column(updatable = false)
+    @CreatedDate // 등록 시간 자동 업데이트
+    private LocalDateTime regTime;
+
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setGuest(Guest guest) {
+        this.guest = guest;
     }
 }
