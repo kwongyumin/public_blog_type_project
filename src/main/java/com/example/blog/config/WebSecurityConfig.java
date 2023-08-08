@@ -67,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
                 .authorizeHttpRequests(authz -> authz
                         .antMatchers("/user/join").permitAll()
                         .antMatchers("/auth/token").permitAll()
-                        .antMatchers("/api/**").hasAnyRole("USER","GUEST")
+                        .antMatchers("/user/**").hasAnyRole("USER")
                         .anyRequest().permitAll())
 
                 // [STEP3] Spring Security JWT Filter Load

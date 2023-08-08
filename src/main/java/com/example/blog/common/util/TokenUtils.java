@@ -5,14 +5,17 @@ import com.example.blog.dto.user.UserRequestDto;
 import com.example.blog.model.user.User;
 import io.jsonwebtoken.*;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 해당 클래스는 JWT에서 사용되는 토큰 관련 유틸들을 관리하는 클래스
@@ -65,7 +68,7 @@ public class TokenUtils {
      */
     public static boolean isValidToken(String token) {
         try {
-            Claims claims = getClaimsFormToken(token);
+            Claims claims = getClaimsFromToken(token);
 
             log.info("expireTime :" + claims.getExpiration());
             log.info("userPk :" + claims.get("userPk") );
@@ -94,6 +97,7 @@ public class TokenUtils {
     public static String getTokenFromHeader(String header) {
         return header.split(" ")[1];
     }
+
 
     /**
      * 토큰의 만료기간을 지정하는 함수
@@ -159,7 +163,7 @@ public class TokenUtils {
      * @param token : 토큰
      * @return Claims : Claims
      */
-    private static Claims getClaimsFormToken(String token) {
+    private static Claims getClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(jwtSecretKey))
                 .parseClaimsJws(token).getBody();
     }
@@ -171,8 +175,34 @@ public class TokenUtils {
      * @return String : 사용자 아이디 (이메일)
      */
     public static String getUserIdFromToken(String token) {
-        Claims claims = getClaimsFormToken(token);
+        Claims claims = getClaimsFromToken(token);
         return claims.get("userEmail").toString();
+    }
+
+    /**
+     *  토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
+     *
+     * @param token : 토큰
+     * @return String : 사용자 정보
+     */
+    public Authentication getAuthentication(String token) {
+        // 토큰 복호화
+        Claims claims = getClaimsFromToken(token);
+
+        if (claims.get("auth") == null) {
+            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+        }
+
+        // 클레임에서 권한 정보 가져오기
+        Collection<? extends GrantedAuthority> authorities =
+                Arrays.stream(claims.get("auth").toString().split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
+        // UserDetails 객체를 만들어서 Authentication 리턴
+        UserDetails principal = null;
+        // UserDetails principal = new User(claims.getSubject(), "", authorities);
+        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 
 }

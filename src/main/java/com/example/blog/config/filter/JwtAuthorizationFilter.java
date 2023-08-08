@@ -74,6 +74,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     String userEmail = TokenUtils.getUserIdFromToken(token);
                     logger.debug("[+] userId(email) Check: " + userEmail);
 
+                    // FIXME : 토큰이 유효하다면 Authentication 객체에
+
                     // [STEP5] 사용자 아이디가 존재하는지 여부 체크
                     if (userEmail != null && !userEmail.equalsIgnoreCase("")) {
                         chain.doFilter(request, response);
