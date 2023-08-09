@@ -1,15 +1,20 @@
 package com.example.blog.common.util;
 
+import com.example.blog.dto.user.UserDetailsDto;
 import com.example.blog.dto.user.UserDto;
 import com.example.blog.dto.user.UserRequestDto;
 import com.example.blog.model.user.User;
+import com.example.blog.service.user.impl.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -21,12 +26,15 @@ import java.util.stream.Collectors;
  * 해당 클래스는 JWT에서 사용되는 토큰 관련 유틸들을 관리하는 클래스
  */
 @Log4j2
+@Component
+@RequiredArgsConstructor
 public class TokenUtils {
 
     // FIXME : 환경파일에 등록 필요
     //    @Value(value = "${custom.jwt-secret-key}")
     private static final String jwtSecretKey = "exampleSecretKey";
 
+    private final UserDetailsServiceImpl userDetailsService;
     /**
      * 사용자 정보를 기반으로 토큰을 생성하여 반환 해주는 메서드
      *
@@ -39,7 +47,7 @@ public class TokenUtils {
         JwtBuilder builder = Jwts.builder()
                 .setHeader(createHeader())                              // Header 구성
                 .setClaims(createClaims(userDto))                       // Payload - Claims 구성
-                .setSubject(String.valueOf(userDto.getUserEmail()))        // Payload - Subject 구성 , FIXME: 사이드 이펙트 고려
+                .setSubject(String.valueOf(userDto.getUserEmail()))        // Payload - Subject 구성
                 .signWith(SignatureAlgorithm.HS256, createSignature())  // Signature 구성
                 .setExpiration(createExpiredDate());                    // Expired Date 구성
         return builder.compact();
@@ -139,10 +147,12 @@ public class TokenUtils {
         log.info("userPk :" + userDto.getUserId() );
         log.info("userEmail :" + userDto.getUserEmail());
         log.info("userNm :" + userDto.getUserName());
+        log.info("authorities : " + userDto.getAuthorityList());
         // NOTE : user pk 와 로그인 id 값인 이메일값을 클레임 셋팅 , 필요에 의해 추가 예정
         claims.put("userPk", userDto.getUserId());
         claims.put("userEmail", userDto.getUserEmail());
         claims.put("userNm",userDto.getUserName());
+        claims.put("authorities", userDto.getAuthorityList());
         return claims;
     }
 
@@ -180,7 +190,7 @@ public class TokenUtils {
     }
 
     /**
-     *  토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
+     *  토큰을 복호화하여 Authentication 객체를 만들어 반환
      *
      * @param token : 토큰
      * @return String : 사용자 정보
@@ -195,13 +205,12 @@ public class TokenUtils {
 
         // 클레임에서 권한 정보 가져오기
         Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get("auth").toString().split(","))
+                Arrays.stream(claims.get("authorities").toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
         // UserDetails 객체를 만들어서 Authentication 리턴
-        UserDetails principal = null;
-        // UserDetails principal = new User(claims.getSubject(), "", authorities);
+        userDetailsService.loadUserByUsername(claims.get("userEmail").toString());
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
 

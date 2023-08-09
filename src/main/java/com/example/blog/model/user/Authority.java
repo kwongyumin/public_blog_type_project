@@ -24,7 +24,8 @@ public class Authority {
     @JsonIgnore
     private Long id;
 
-    private AuthType authType;
+    @Column
+    private String authorityName;
 
     @JoinColumn(name = "user")
     @ManyToOne(fetch = FetchType.LAZY)

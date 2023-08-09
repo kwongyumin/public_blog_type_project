@@ -1,11 +1,15 @@
 package com.example.blog.dto.user;
 
+
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Getter
@@ -14,11 +18,13 @@ public class UserDetailsDto implements UserDetails {
 
     @Delegate
     private UserDto userDto;
-    private Collection<? extends GrantedAuthority> authorities;
 
+    // FIXME: 권한 처리방식 수정
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return this.userDto.getAuthorityList().stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
     @Override

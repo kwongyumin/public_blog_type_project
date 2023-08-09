@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @Getter
 @NoArgsConstructor
@@ -23,5 +25,7 @@ public class UserDto {
     private String userEmail;
     @ApiModelProperty(position = 4 ,  value = "유저 비밀번호 (암호화)",required = true)
     private String userPassword;
+    @ApiModelProperty(position = 5 ,  value = "권한",required = true)
+    private List<String> authorityList;
 
 }

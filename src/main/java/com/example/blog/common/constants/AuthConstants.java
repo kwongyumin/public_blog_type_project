@@ -6,4 +6,8 @@ package com.example.blog.common.constants;
 public final class AuthConstants {
     public static final String AUTH_HEADER = "Authorization";
     public static final String TOKEN_TYPE = "BEARER";
+
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+
+    public static final String ROLE_USER = "ROLE_USER";
 }

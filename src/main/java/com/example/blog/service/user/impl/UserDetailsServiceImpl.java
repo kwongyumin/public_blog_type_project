@@ -18,7 +18,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserService userService;
 
-    public UserDetailsServiceImpl(UserService us, UserRepository up) {
+    public UserDetailsServiceImpl(UserService us) {
         this.userService = us;
     }
 

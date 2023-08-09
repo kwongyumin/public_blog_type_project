@@ -1,6 +1,7 @@
 package com.example.blog.model.user;
 
 
+import com.example.blog.common.constants.AuthConstants;
 import com.example.blog.dto.user.UserRequestDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -79,7 +80,7 @@ public class User {
         // NOTE : 현재 기준으로는 회원 가입 -> 유저 권한을 의미 , 어드민 추가 전 까지는 변동사항 x
         List<Authority> authList = new ArrayList<>();
         Authority auth = Authority.builder()
-                .authType(AuthType.ROLE_USER)
+                .authorityName(AuthConstants.ROLE_USER)
                 .build();
         authList.add(auth);
 
