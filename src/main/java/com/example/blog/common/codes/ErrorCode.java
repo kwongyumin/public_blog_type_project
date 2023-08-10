@@ -82,6 +82,8 @@ public enum ErrorCode {
     AUTH_TOKEN_INVALID(401, "A407", "AUTH_TOKEN_INVALID"),
     AUTH_TOKEN_NOT_MATCH(401, "A408", "AUTH_TOKEN_NOT_MATCH"),
     AUTH_TOKEN_IS_NULL(401, "A409", "AUTH_TOKEN_IS_NULL"),
+    INVALID_AUTHORITIES(401, "A410" , "INVALID_AUTHORITIES"),
+
 
     /**
      * ******************************* Custom Error CodeList ***************************************

@@ -78,6 +78,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
                     // [STEP5] 사용자 아이디가 존재하는지 여부 체크
                     if (userEmail != null && !userEmail.equalsIgnoreCase("")) {
+
+
                         // NOTE: 다음 필터 진행
                         chain.doFilter(request, response);
 
