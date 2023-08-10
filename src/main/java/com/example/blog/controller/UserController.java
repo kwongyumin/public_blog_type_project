@@ -36,7 +36,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success", response = UserResponseDto.JoinUser.class)
     })
-    public  ResponseEntity<ApiResult> saveUser(@Valid @RequestBody UserRequestDto.JoinUser userJoinRequestDto){
+    public ResponseEntity<ApiResult> saveUser(@Valid @RequestBody UserRequestDto.JoinUser userJoinRequestDto){
         UserResponseDto.JoinUser result  = userService.saveUser(userJoinRequestDto);
         ApiResult data = new ApiResult(result,SuccessCode.JOIN_SUCCESS.getStatus(),SuccessCode.JOIN_SUCCESS.getMessage());
         return new ResponseEntity<>(data, HttpStatus.OK);

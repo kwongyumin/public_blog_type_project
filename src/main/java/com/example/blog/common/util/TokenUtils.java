@@ -1,9 +1,7 @@
 package com.example.blog.common.util;
 
-import com.example.blog.dto.user.UserDetailsDto;
+import com.example.blog.common.codes.ErrorCode;
 import com.example.blog.dto.user.UserDto;
-import com.example.blog.dto.user.UserRequestDto;
-import com.example.blog.model.user.User;
 import com.example.blog.service.user.impl.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -199,8 +196,8 @@ public class TokenUtils {
         // 토큰 복호화
         Claims claims = getClaimsFromToken(token);
 
-        if (claims.get("auth") == null) {
-            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+        if (claims.get("authorities") == null) {
+            throw new RuntimeException(ErrorCode.INVALID_AUTHORITIES.getMessage());
         }
 
         // 클레임에서 권한 정보 가져오기
@@ -210,8 +207,8 @@ public class TokenUtils {
                         .collect(Collectors.toList());
 
         // UserDetails 객체를 만들어서 Authentication 리턴
-        userDetailsService.loadUserByUsername(claims.get("userEmail").toString());
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(claims.get("userEmail").toString());
+        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
 
 }

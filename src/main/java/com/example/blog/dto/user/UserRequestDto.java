@@ -1,7 +1,6 @@
 package com.example.blog.dto.user;
 
 
-import com.example.blog.model.user.AuthType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;

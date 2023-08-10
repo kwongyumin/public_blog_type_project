@@ -35,14 +35,11 @@ public class UserCustomRepositoryImpl implements UserCumtomRepository {
                 .map(Authority::getAuthorityName)
                 .collect(Collectors.toList());
 
-        UserDto userDto = UserDto.builder()
+        return UserDto.builder()
                 .userId(user.getId())
                 .userName(user.getUserName())
                 .userEmail(user.getEmail())
                 .authorityList(authorityList)
                 .build();
-        return userDto;
     }
-
-
 }
