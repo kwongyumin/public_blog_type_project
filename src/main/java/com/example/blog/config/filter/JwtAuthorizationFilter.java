@@ -10,9 +10,12 @@ import com.example.blog.common.util.TokenUtils;
 import com.example.blog.config.exception.BusinessExceptionHandler;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import jdk.nashorn.internal.parser.Token;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -35,12 +38,13 @@ import java.util.List;
 @Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain)
             throws IOException, ServletException {
 
         // 1. 토큰이 필요하지 않은 API URL에 대해서 배열로 구성합니다.
-        List<String> list = Arrays.asList("/auth/token","/user/join");
+        List<String> list = Arrays.asList("/auth/generate-token","/user/join");
 
 
         // 2. 토큰이 필요하지 않은 API URL의 경우 => 로직 처리 없이 다음 필터로 이동
@@ -74,11 +78,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     String userEmail = TokenUtils.getUserIdFromToken(token);
                     logger.debug("[+] userId(email) Check: " + userEmail);
 
-                    // FIXME : 토큰이 유효하다면 Authentication 객체에
-
                     // [STEP5] 사용자 아이디가 존재하는지 여부 체크
                     if (userEmail != null && !userEmail.equalsIgnoreCase("")) {
 
+                        // FIXME : 토큰이 유효하다면 Authentication 객체 반환 -> SecurityContextHolder 셋팅
+                        Authentication authentication = TokenUtils.getAuthentication(token);
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
 
                         // NOTE: 다음 필터 진행
                         chain.doFilter(request, response);

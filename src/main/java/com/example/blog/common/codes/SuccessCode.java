@@ -26,8 +26,8 @@ public enum SuccessCode {
     /**
      * ******************************* Login Success CodeList (debug) ***************************************
      */
-    LOGIN_SUCCESS(200, "200","LOGIN_SUCCESS") ,
-    JOIN_SUCCESS(200, "200","JOIN_SUCCESS") ,
+    TOKEN_ISSUED_SUCCESS(200, "200","Token Issued Successfully") ,
+    JOIN_SUCCESS(200, "200","Join Success") ,
 
     ; // End
 

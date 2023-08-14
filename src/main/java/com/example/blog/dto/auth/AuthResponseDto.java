@@ -2,6 +2,7 @@ package com.example.blog.dto.auth;
 
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,16 +18,24 @@ public class AuthResponseDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class GuestToken implements Serializable {
+    public static class GenerateUserToken implements Serializable {
 
+        @ApiModelProperty(position = 1 , value = "유저 pk", required = true)
+        private Long userId;
+        @ApiModelProperty(position = 2 , value = "접근 토큰", required = true)
+        private String accessToken;
     }
-
 
     @Getter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class UserToken implements Serializable {
+    public static class GenerateGuestToken implements Serializable {
+
+        @ApiModelProperty(position = 1 , value = "게스트 pk", required = true)
+        private Long guestId;
+        @ApiModelProperty(position = 2 , value = "접근 토큰", required = true)
+        private String accessToken;
 
     }
 

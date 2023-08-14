@@ -69,20 +69,20 @@ public enum ErrorCode {
      */
 
     // 토큰이 유효하지 않음
-    TOKEN_EXPIRED(401 , "A401" ,"TOKEN_EXPIRED" ),
+    TOKEN_EXPIRED(401 , "A401" ,"Token Expired" ),
     // JWT 허용된 토큰이 아님
-    TOKEN_SIGNATURE_EXCEPTION_LOGIN(401 , "A402" ,"TOKEN_SIGNATURE_EXCEPTION_LOGIN" ),
+    TOKEN_SIGNATURE_EXCEPTION_LOGIN(401 , "A402" ,"Token Signature Exception Login" ),
     // JWT 토큰내에서 오류 발생 시
-    TOKEN_PARSING_JWT_EXCEPTION(401 , "A403" ,"TOKEN_PARSING_JWT_EXCEPTION" ),
+    TOKEN_PARSING_JWT_EXCEPTION(401 , "A403" ,"Token Parsing Jwt Exception" ),
     // 이외 JTW 토큰내에서 오류 발생
-    OTHER_TOKEN_ERROR(401 , "A404" ,"OTHER_TOKEN_ERROR" ),
+    OTHER_TOKEN_ERROR(401 , "A404" ,"Other Token Error" ),
 
-    AUTH_IS_NULL(401, "A405", "AUTH_IS_NULL"),
-    AUTH_TOKEN_FAIL(401, "A406", "AUTH_TOKEN_FAIL"),
-    AUTH_TOKEN_INVALID(401, "A407", "AUTH_TOKEN_INVALID"),
-    AUTH_TOKEN_NOT_MATCH(401, "A408", "AUTH_TOKEN_NOT_MATCH"),
-    AUTH_TOKEN_IS_NULL(401, "A409", "AUTH_TOKEN_IS_NULL"),
-    INVALID_AUTHORITIES(401, "A410" , "INVALID_AUTHORITIES"),
+    AUTH_IS_NULL(401, "A405", "Auth Is Null"),
+    AUTH_TOKEN_FAIL(401, "A406", "Auth Token Fail"),
+    AUTH_TOKEN_INVALID(401, "A407", "Auth Token Invalid"),
+    AUTH_TOKEN_NOT_MATCH(401, "A408", "Auth Token Not Match"),
+    AUTH_TOKEN_IS_NULL(401, "A409", "Auth Token Is Null"),
+    INVALID_AUTHORITIES(401, "A410" , "Invalid Authorities"),
 
 
     /**

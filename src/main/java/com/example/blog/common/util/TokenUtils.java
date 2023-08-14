@@ -31,7 +31,7 @@ public class TokenUtils {
     //    @Value(value = "${custom.jwt-secret-key}")
     private static final String jwtSecretKey = "exampleSecretKey";
 
-    private final UserDetailsServiceImpl userDetailsService;
+    private static UserDetailsServiceImpl userDetailsService;
     /**
      * 사용자 정보를 기반으로 토큰을 생성하여 반환 해주는 메서드
      *
@@ -192,7 +192,7 @@ public class TokenUtils {
      * @param token : 토큰
      * @return String : 사용자 정보
      */
-    public Authentication getAuthentication(String token) {
+    public static Authentication getAuthentication(String token) {
         // 토큰 복호화
         Claims claims = getClaimsFromToken(token);
 

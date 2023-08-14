@@ -9,13 +9,13 @@ import java.util.Optional;
 
 public interface UserService {
 
-    /*
-        FIXME: 로그인 처리 인터페이스 -> 토큰발급 처리와 분리
+    /**
+     *  DESC : jwt 필터 내에서 유저 정보 검증에 대한 요청을 처리
      */
     Optional<UserDto> loginUser(UserDto userDto);
 
-    /*
-        유저 정보 저장 (회원가입 처리 및 토큰 발급)
+    /**
+     *  DESC : 유저정보 저장 처리 (회원가입)
      */
     UserResponseDto.JoinUser saveUser(UserRequestDto.JoinUser requestDto);
 
