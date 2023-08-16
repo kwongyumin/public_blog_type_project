@@ -1,7 +1,9 @@
 package com.example.blog.common.util;
 
 import com.example.blog.common.codes.ErrorCode;
+import com.example.blog.config.exception.BusinessExceptionHandler;
 import com.example.blog.dto.user.UserDto;
+import com.example.blog.service.user.UserService;
 import com.example.blog.service.user.impl.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +30,8 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class TokenUtils {
+
+    private static UserService userService;
 
     // FIXME : 환경파일에 등록 필요
     //    @Value(value = "${custom.jwt-secret-key}")
@@ -209,6 +215,24 @@ public class TokenUtils {
         // UserDetails 객체를 만들어서 Authentication 리턴
         UserDetails userDetails = userDetailsService.loadUserByUsername(claims.get("userEmail").toString());
         return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
+    }
+
+    /**
+     * SecurityContextHolder 에 저장된 사용자 정보를 반환한다.
+     *
+     * @return Long : 사용자 pk
+     */
+    public static Long getUserPkFromAuthentication() {
+        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication();
+        UserDto userDto = UserDto.builder()
+                .userEmail(userDetails.getUsername())
+                .build();
+
+        UserDto user = userService.loginUser(userDto).orElseThrow(
+                () -> new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage() , ErrorCode.SELECT_ERROR)
+        );
+
+        return user.getUserId();
     }
 
 }
