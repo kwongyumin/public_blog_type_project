@@ -22,7 +22,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponseDto.GenerateUserToken generateToken(AuthRequestDto.GenerateUserToken requestDto, String roleUser) {
         // FIXME : 회원정보 관련 ErrorCode 추가 필요
-        UserDto user = userRepository.findLoginUserByEmail(requestDto.getUserEmail()).orElseThrow(
+        UserDto user = userRepository.findUserByEmail(requestDto.getUserEmail()).orElseThrow(
                 () -> new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage(), ErrorCode.SELECT_ERROR));
 
         String authToken = TokenUtils.generateJwtToken(user);

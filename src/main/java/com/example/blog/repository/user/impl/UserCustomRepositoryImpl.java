@@ -21,7 +21,7 @@ public class UserCustomRepositoryImpl implements UserCumtomRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Optional<UserDto> findLoginUserByEmail(String email) {
+    public Optional<UserDto> findUserByEmail(String email) {
         User user = queryFactory
                 .selectFrom(QUser.user)
                 .where(QUser.user.email.eq(email))

@@ -116,6 +116,7 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
      *
      * @return BCryptPasswordEncoder
      */
+    @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }

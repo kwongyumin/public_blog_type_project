@@ -12,7 +12,7 @@ public interface UserService {
     /**
      *  DESC : jwt 필터 내에서 유저 정보 검증에 대한 요청을 처리
      */
-    Optional<UserDto> loginUser(UserDto userDto);
+    Optional<UserDto> findUserByEmail(UserDto userDto);
 
     /**
      *  DESC : 유저정보 저장 처리 (회원가입)

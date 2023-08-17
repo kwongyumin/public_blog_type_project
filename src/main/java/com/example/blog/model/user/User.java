@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -67,14 +68,15 @@ public class User {
         role.forEach(o -> o.setUser(this));
     }
 
+
     // FIXME : 우선 로그인 타입별 셋팅 구조 -> 카카오 로그인 추가 후 다시 생각 필요
-    public static User setDefaultUser(UserRequestDto.JoinUser requestDto){
+    public static User setDefaultUser(UserRequestDto.JoinUser requestDto, PasswordEncoder passwordEncoder){
         User user = User.builder()
                 .loginType(LoginType.DEFAULT)
                 .userName(requestDto.getUserName())
                 .nickName(requestDto.getNickName())
-                .password(requestDto.getPassword())
-                .email(requestDto.getEmail())
+                .password(passwordEncoder.encode(requestDto.getUserPassword()))
+                .email(requestDto.getUserEmail())
                 .build();
 
         // NOTE : 현재 기준으로는 회원 가입 -> 유저 권한을 의미 , 어드민 추가 전 까지는 변동사항 x

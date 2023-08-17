@@ -84,6 +84,13 @@ public enum ErrorCode {
     AUTH_TOKEN_IS_NULL(401, "A409", "Auth Token Is Null"),
     INVALID_AUTHORITIES(401, "A410" , "Invalid Authorities"),
 
+    /**
+     * ******************************* JOIN / LOGIN Error CodeList ***************************************
+     */
+    EMAIL_ALREADY_EXIST(404, "J404" , "Your Mail already Exist"),
+
+
+
 
     /**
      * ******************************* Custom Error CodeList ***************************************

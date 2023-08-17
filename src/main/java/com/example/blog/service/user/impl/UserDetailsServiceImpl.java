@@ -26,12 +26,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         // 사용자 정보가 존재하지 않는 경우
         if (userEmail == null || userEmail.equals("")) {
-            return userService.loginUser(userDto)
+            return userService.findUserByEmail(userDto)
                     .map(u -> new UserDetailsDto(u))
                     .orElseThrow(() -> new AuthenticationServiceException("Authentication failed : " + userEmail));
         }
         else {
-            return userService.loginUser(userDto)
+            return userService.findUserByEmail(userDto)
                     .map(u -> new UserDetailsDto(u))
                     .orElseThrow(() -> new AuthenticationServiceException("Authentication failed : " + userEmail));
         }

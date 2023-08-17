@@ -228,7 +228,7 @@ public class TokenUtils {
                 .userEmail(userDetails.getUsername())
                 .build();
 
-        UserDto user = userService.loginUser(userDto).orElseThrow(
+        UserDto user = userService.findUserByEmail(userDto).orElseThrow(
                 () -> new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage() , ErrorCode.SELECT_ERROR)
         );
 

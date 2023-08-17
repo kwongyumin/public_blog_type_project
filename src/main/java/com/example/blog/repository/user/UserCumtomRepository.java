@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface UserCumtomRepository {
 
-    Optional<UserDto> findLoginUserByEmail(String email);
+    Optional<UserDto> findUserByEmail(String email);
 }

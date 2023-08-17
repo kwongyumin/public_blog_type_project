@@ -4,8 +4,6 @@ import com.example.blog.common.codes.SuccessCode;
 import com.example.blog.common.response.ApiResult;
 import com.example.blog.dto.blog.BlogRequestDto;
 import com.example.blog.dto.blog.BlogResponseDto;
-import com.example.blog.dto.user.UserRequestDto;
-import com.example.blog.dto.user.UserResponseDto;
 import com.example.blog.service.blog.BlogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
