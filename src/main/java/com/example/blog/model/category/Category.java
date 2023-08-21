@@ -1,5 +1,7 @@
 package com.example.blog.model.category;
 
+import com.example.blog.model.blog.Blog;
+import com.example.blog.model.user.Authority;
 import com.sun.istack.NotNull;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,6 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,7 +33,8 @@ public class Category {
     @Column
     private String color;
 
-    // fixme : Blog 와 연관관걔 추가 필요 , one to many
+    @OneToMany(mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Blog> blogs = new ArrayList<>();
 
     @Column
     @LastModifiedDate // 수정 시간 자동 업데이트
@@ -38,4 +43,10 @@ public class Category {
     @Column(updatable = false)
     @CreatedDate // 등록 시간 자동 업데이트
     private LocalDateTime regTime;
+
+    public void setBlogs(List<Blog> blogs) {
+        this.blogs = blogs;
+        blogs.forEach(b -> b.setCategory(this));
+    }
+
 }

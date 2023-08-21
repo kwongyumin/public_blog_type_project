@@ -79,7 +79,7 @@ public class User {
                 .email(requestDto.getUserEmail())
                 .build();
 
-        // NOTE : 현재 기준으로는 회원 가입 -> 유저 권한을 의미 , 어드민 추가 전 까지는 변동사항 x
+        // FIXME : 현재 기준으로는 회원 가입 -> 유저 권한을 의미 , 어드민 추가 전 까지는 변동사항 x
         List<Authority> authList = new ArrayList<>();
         Authority auth = Authority.builder()
                 .authorityName(AuthConstants.ROLE_USER)

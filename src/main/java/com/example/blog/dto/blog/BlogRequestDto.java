@@ -20,7 +20,7 @@ public class BlogRequestDto {
     public static class createBlog {
 
         @ApiModelProperty(position = 1 ,  value = "카테고리 idx",required = true, example = "")
-        @NotNull
+        @NotNull(message = "카테고리 idx 는 필수항목입니다.")
         private Long categoryId;
 
         @ApiModelProperty(position = 2 , value = "블로그 제목",required = true, example = "")

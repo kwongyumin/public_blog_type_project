@@ -1,6 +1,7 @@
 package com.example.blog.model.blog;
 
 
+import com.example.blog.model.category.Category;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -32,7 +33,9 @@ public class Blog {
     @Column
     private String contents;
 
-    // fixme : 카테고리와 연관관계 추가 , many to one
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private Category category;
 
     @Column
     @LastModifiedDate // 수정 시간 자동 업데이트
@@ -41,4 +44,17 @@ public class Blog {
     @Column(updatable = false)
     @CreatedDate // 등록 시간 자동 업데이트
     private LocalDateTime regTime;
+
+    public void setCategory(Category category) {
+        if (this.category != null) {
+            this.category.getBlogs().remove(this);
+        }
+        this.category = category;
+        if (category != null) {
+            category.getBlogs().add(this);
+        }
+    }
+
+
+
 }

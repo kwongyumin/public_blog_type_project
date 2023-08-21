@@ -10,7 +10,6 @@ import com.example.blog.common.util.TokenUtils;
 import com.example.blog.config.exception.BusinessExceptionHandler;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
-import jdk.nashorn.internal.parser.Token;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
@@ -81,7 +80,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     // [STEP5] 사용자 아이디가 존재하는지 여부 체크
                     if (userEmail != null && !userEmail.equalsIgnoreCase("")) {
 
-                        // FIXME : 토큰이 유효하다면 Authentication 객체 반환 -> SecurityContextHolder 셋팅
+                        // FIXME : 토큰이 유효하다면 Authentication 객체 반환 -> SecurityContextHolder 셋팅 -> 동작 확인 필요
                         Authentication authentication = TokenUtils.getAuthentication(token);
                         SecurityContextHolder.getContext().setAuthentication(authentication);
 

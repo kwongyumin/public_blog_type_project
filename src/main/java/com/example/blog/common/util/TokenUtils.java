@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +41,6 @@ public class TokenUtils {
      * 사용자 정보를 기반으로 토큰을 생성하여 반환 해주는 메서드
      *
      * @param  userDto : 사용자 정보
-     *             // FIMXE : 계층 간 데이터 이동방식을 고려 , entity -> dto 매핑 방식 추가 및 수정 필요
      * @return String : 토큰
      */
     public static String generateJwtToken(UserDto userDto) {
@@ -147,14 +145,14 @@ public class TokenUtils {
         // 공개 클레임에 사용자의 이름과 이메일을 설정하여 정보를 조회할 수 있다.
         Map<String, Object> claims = new HashMap<>();
 
-        log.info("userPk :" + userDto.getUserId() );
+        log.info("userId :" + userDto.getUserId() );
         log.info("userEmail :" + userDto.getUserEmail());
-        log.info("userNm :" + userDto.getUserName());
+        log.info("userName :" + userDto.getUserName());
         log.info("authorities : " + userDto.getAuthorityList());
         // NOTE : user pk 와 로그인 id 값인 이메일값을 클레임 셋팅 , 필요에 의해 추가 예정
-        claims.put("userPk", userDto.getUserId());
+        claims.put("userId", userDto.getUserId());
         claims.put("userEmail", userDto.getUserEmail());
-        claims.put("userNm",userDto.getUserName());
+        claims.put("userName",userDto.getUserName());
         claims.put("authorities", userDto.getAuthorityList());
         return claims;
     }
@@ -203,7 +201,7 @@ public class TokenUtils {
         Claims claims = getClaimsFromToken(token);
 
         if (claims.get("authorities") == null) {
-            throw new RuntimeException(ErrorCode.INVALID_AUTHORITIES.getMessage());
+            throw new RuntimeException(ErrorCode.NOT_VALID_AUTHORITIES.getMessage());
         }
 
         // 클레임에서 권한 정보 가져오기
@@ -219,10 +217,9 @@ public class TokenUtils {
 
     /**
      * SecurityContextHolder 에 저장된 사용자 정보를 반환한다.
-     *
      * @return Long : 사용자 pk
      */
-    public static Long getUserPkFromAuthentication() {
+    public static UserDto getUserFromAuthentication() {
         UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication();
         UserDto userDto = UserDto.builder()
                 .userEmail(userDetails.getUsername())
@@ -232,7 +229,7 @@ public class TokenUtils {
                 () -> new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage() , ErrorCode.SELECT_ERROR)
         );
 
-        return user.getUserId();
+        return user;
     }
 
 }

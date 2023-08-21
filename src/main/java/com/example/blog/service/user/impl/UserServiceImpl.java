@@ -32,6 +32,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByEmail(userDto.getUserEmail());
     }
 
+    /**
+     * 이메일 중복 여부를 확인
+     *
+     * @param requestDto UserRequestDto.JoinUser
+     * @return UserResponseDto.JoinUser
+     */
     @Override
     @Transactional
     public UserResponseDto.JoinUser saveUser(UserRequestDto.JoinUser requestDto) {
@@ -58,7 +64,7 @@ public class UserServiceImpl implements UserService {
      */
     private boolean isEmailExist(String email) {
         Optional<UserDto> byEmail = userRepository.findUserByEmail(email);
-        return byEmail.isPresent();
+        return byEmail.isPresent(); // 존재 true , 부재 false
     }
 
 

@@ -40,7 +40,7 @@ public class AuthController {
             @ApiResponse(code = 200, message = "success", response = AuthResponseDto.GenerateUserToken.class)
     })
     public ResponseEntity<ApiResult> generateToken(@Valid @RequestBody AuthRequestDto.GenerateUserToken userAuthRequestDto){
-        AuthResponseDto.GenerateUserToken result  = authService.generateToken(userAuthRequestDto, AuthConstants.ROLE_USER);
+        AuthResponseDto.GenerateUserToken result  = authService.generateUserToken(userAuthRequestDto, AuthConstants.ROLE_USER);
         ApiResult data = new ApiResult(result, SuccessCode.TOKEN_ISSUED_SUCCESS.getStatus(),SuccessCode.TOKEN_ISSUED_SUCCESS.getMessage());
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
