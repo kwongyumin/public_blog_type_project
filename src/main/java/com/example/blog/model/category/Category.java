@@ -44,8 +44,8 @@ public class Category {
     @CreatedDate // 등록 시간 자동 업데이트
     private LocalDateTime regTime;
 
-    public void setBlogs(List<Blog> blogs) {
-        this.blogs = blogs;
+    public void setBlogs(Blog blog) {
+        this.blogs.add(blog);
         blogs.forEach(b -> b.setCategory(this));
     }
 

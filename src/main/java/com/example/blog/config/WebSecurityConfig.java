@@ -65,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
                 // FIXME : 회원/ 비회원 권한 설정 필요
                 .authorizeHttpRequests(authz -> authz
                         .antMatchers("/user/join").permitAll()
-                        .antMatchers("/auth/token").permitAll()
+                        .antMatchers("/auth/generate-token").permitAll()
                         .antMatchers("/user/**").hasAnyRole("USER") // hasAnyRole -> ROLE x
                         .anyRequest().permitAll())
 

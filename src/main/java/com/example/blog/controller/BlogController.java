@@ -35,10 +35,10 @@ public class BlogController {
     @PostMapping(value = "/create" , produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "블로그 생성" , notes = "블로그 생성 요청을 처리한다.", httpMethod = "POST")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "success", response = BlogResponseDto.createBlog.class)
+            @ApiResponse(code = 200, message = "success", response = BlogResponseDto.CreateBlog.class)
     })
-    public ResponseEntity<ApiResult> createBlog(@Valid @RequestBody BlogRequestDto.createBlog blogCreateRequestDto){
-        BlogResponseDto.createBlog result  = blogService.createBlog(blogCreateRequestDto);
+    public ResponseEntity<ApiResult> createBlog(@Valid @RequestBody BlogRequestDto.CreateBlog blogCreateRequestDto){
+        BlogResponseDto.CreateBlog result  = blogService.createBlog(blogCreateRequestDto);
         ApiResult data = new ApiResult(result, SuccessCode.JOIN_SUCCESS.getStatus(),SuccessCode.JOIN_SUCCESS.getMessage());
         return new ResponseEntity<>(data, HttpStatus.OK);
     }

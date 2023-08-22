@@ -14,7 +14,7 @@ public class BlogResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class createBlog {
+    public static class CreateBlog {
 
         @ApiModelProperty(position = 1 ,  value = "카테고리 idx",required = true, example = "")
         private Long categoryId;

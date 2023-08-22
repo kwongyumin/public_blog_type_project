@@ -1,6 +1,7 @@
 package com.example.blog.model.blog;
 
 
+import com.example.blog.dto.blog.BlogRequestDto;
 import com.example.blog.model.category.Category;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -54,7 +55,17 @@ public class Blog {
             category.getBlogs().add(this);
         }
     }
+    public static Blog createBlog(Long userId, BlogRequestDto.CreateBlog requestDto, Category category){
+        Blog blog = Blog.builder()
+                .userId(userId)
+                .title(requestDto.getBlogTitle())
+                .contents(requestDto.getBlogContents())
+                .build();
+        if (category != null) {
+            blog.setCategory(category);
+        }
 
-
+        return blog;
+    }
 
 }
