@@ -25,6 +25,13 @@ public class BlogServiceImpl implements BlogService {
 
     private final BlogRepository blogRepository;
 
+
+    /**
+     * 블로그 생성 요청을 처리한다.
+     *
+     * @param requestDto BlogRequestDto.CreateBlog
+     * @return BlogResponseDto.CreateBlog
+     */
     @Override
     public BlogResponseDto.CreateBlog createBlog(BlogRequestDto.CreateBlog requestDto) {
 
@@ -40,6 +47,6 @@ public class BlogServiceImpl implements BlogService {
         if (saveBlog == null){
             throw new BusinessExceptionHandler(ErrorCode.INSERT_ERROR.getMessage() , ErrorCode.INSERT_ERROR);
         }
-        return new BlogResponseDto.CreateBlog(category.getId(),saveBlog.getId());
+        return new BlogResponseDto.CreateBlog(category.getId(),saveBlog.getId(), user.getUserId());
     }
 }

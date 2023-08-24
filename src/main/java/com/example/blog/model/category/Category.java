@@ -1,5 +1,6 @@
 package com.example.blog.model.category;
 
+import com.example.blog.dto.category.CategoryRequestDto;
 import com.example.blog.model.blog.Blog;
 import com.example.blog.model.user.Authority;
 import com.sun.istack.NotNull;
@@ -28,6 +29,9 @@ public class Category {
     private Long Id;
 
     @Column
+    private Long userId;
+
+    @Column
     private String categoryName;
 
     @Column
@@ -48,5 +52,17 @@ public class Category {
         this.blogs.add(blog);
         blogs.forEach(b -> b.setCategory(this));
     }
+
+    public static Category createCategory(Long userId , CategoryRequestDto.CreateCategory requestDto) {
+        Category category = Category.builder()
+                .userId(userId)
+                .categoryName(requestDto.getCategoryName())
+                .color(requestDto.getCategoryColor())
+                .build();
+
+        return category;
+    }
+
+
 
 }

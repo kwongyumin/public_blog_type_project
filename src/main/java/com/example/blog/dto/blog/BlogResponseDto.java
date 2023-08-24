@@ -22,6 +22,9 @@ public class BlogResponseDto {
         @ApiModelProperty(position = 2 , value = "블로그 idx",required = true, example = "")
         private Long blogId;
 
+        @ApiModelProperty(position = 3 , value = "유저 idx",required = true, example = "")
+        private Long userId;
+
     }
 
 }
