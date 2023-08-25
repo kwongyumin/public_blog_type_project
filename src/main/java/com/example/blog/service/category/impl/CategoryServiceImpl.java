@@ -25,6 +25,21 @@ public class CategoryServiceImpl implements CategoryService {
     /**
      * 카테고리 생성 요청을 처리한다.
      *
+     * @param userId Long
+     * @return CategoryResponseDto.FindCategory
+     */
+    @Override
+    public CategoryResponseDto.FindCategory findCategoryList(Long userId) {
+
+
+
+
+        return null;
+    }
+
+    /**
+     * 카테고리 생성 요청을 처리한다.
+     *
      * @param requestDto CategoryRequestDto.CreateCategory
      * @return CategoryResponseDto.CreateCategory
      */

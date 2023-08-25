@@ -26,7 +26,7 @@ public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @Column
     private Long userId;
@@ -35,7 +35,7 @@ public class Category {
     private String categoryName;
 
     @Column
-    private String color;
+    private String categoryColor;
 
     @OneToMany(mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Blog> blogs = new ArrayList<>();
@@ -57,7 +57,7 @@ public class Category {
         Category category = Category.builder()
                 .userId(userId)
                 .categoryName(requestDto.getCategoryName())
-                .color(requestDto.getCategoryColor())
+                .categoryColor(requestDto.getCategoryColor())
                 .build();
 
         return category;

@@ -14,10 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -29,6 +26,20 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    /**
+     * @param userId Long
+     * @return ApiResponseWrapper<ApiResponse> : 응답 결과 및 응답 코드 반환
+     */
+    @GetMapping(value = "/list/{userId}" , produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "카테고리 조회" , notes = "특정 유저의 블로그 카테고리 목록을 조회한다.", httpMethod = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "success", response = CategoryResponseDto.FindCategory.class)
+    })
+    public ResponseEntity<ApiResult> findCategoryList(@PathVariable(name = "userId") Long userId){
+        CategoryResponseDto.FindCategory result  = categoryService.findCategoryList(userId);
+        ApiResult data = new ApiResult(result, SuccessCode.SELECT_SUCCESS.getStatus(),SuccessCode.SELECT_SUCCESS.getMessage());
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
 
     /**
      * @param categoryCreateRequestDto CategoryRequestDto.CreateCategory
@@ -39,9 +50,9 @@ public class CategoryController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success", response = CategoryResponseDto.CreateCategory.class)
     })
-    public ResponseEntity<ApiResult> createBlog(@Valid @RequestBody CategoryRequestDto.CreateCategory categoryCreateRequestDto){
+    public ResponseEntity<ApiResult> createCategory(@Valid @RequestBody CategoryRequestDto.CreateCategory categoryCreateRequestDto){
         CategoryResponseDto.CreateCategory result  = categoryService.createCategory(categoryCreateRequestDto);
-        ApiResult data = new ApiResult(result, SuccessCode.JOIN_SUCCESS.getStatus(),SuccessCode.JOIN_SUCCESS.getMessage());
+        ApiResult data = new ApiResult(result, SuccessCode.INSERT_SUCCESS.getStatus(),SuccessCode.INSERT_SUCCESS.getMessage());
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 }

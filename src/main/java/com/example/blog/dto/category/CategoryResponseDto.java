@@ -14,6 +14,26 @@ public class CategoryResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
+    public static class FindCategory {
+
+        @ApiModelProperty(position = 1 , value ="카테고리 Idx",required = true)
+        private Long categoryId;
+
+        @ApiModelProperty(position = 2 , value ="유저 Idx",required = true)
+        private Long userId;
+
+        @ApiModelProperty(position = 3 , value ="카테고리 명",required = true)
+        private String categoryName;
+
+        @ApiModelProperty(position = 3 , value ="카테고리 컬러",required = true)
+        private String categoryColor;
+
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
     public static class CreateCategory {
 
         @ApiModelProperty(position = 1 , value ="카테고리 Idx",required = true)

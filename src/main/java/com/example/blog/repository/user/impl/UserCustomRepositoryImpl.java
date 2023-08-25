@@ -27,10 +27,10 @@ public class UserCustomRepositoryImpl implements UserCumtomRepository {
                 .where(QUser.user.email.eq(email))
                 .fetchOne();
 
-        return Optional.ofNullable(user != null ? mapToUserVo(user) : null);
+        return Optional.ofNullable(user != null ? entityToUserDto(user) : null);
     }
 
-    private UserDto mapToUserVo(User user) {
+    private UserDto entityToUserDto(User user) {
         List<String> authorityList = user.getRoles().stream()
                 .map(Authority::getAuthorityName)
                 .collect(Collectors.toList());
