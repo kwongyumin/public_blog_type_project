@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -32,6 +33,7 @@ public class AuthServiceImpl implements AuthService {
      *   NOTE : 비회원 토큰 발급 추가 예정 ->
      */
     @Override
+    @Transactional
     public AuthResponseDto.GenerateUserToken generateUserToken(AuthRequestDto.GenerateUserToken requestDto, String roleUser) {
 
         // #1. 이메일 -> 유저정보 검증

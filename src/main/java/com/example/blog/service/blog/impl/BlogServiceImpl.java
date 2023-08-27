@@ -15,6 +15,7 @@ import com.example.blog.service.blog.BlogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class BlogServiceImpl implements BlogService {
      * @return BlogResponseDto.FindBlog List
      */
     @Override
+    @Transactional(readOnly = true)
     public BlogResponseDto.FindBlogDetail findBlogDetail(Long blogId) {
         return blogRepository.findBlogDetailByBlogId(blogId).orElseThrow(
                 () -> new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage() , ErrorCode.SELECT_ERROR));
@@ -47,11 +49,24 @@ public class BlogServiceImpl implements BlogService {
      * @return BlogResponseDto.FindBlog List
      */
     @Override
-    public List<BlogResponseDto.FindBlog> findBlog(Long categoryId, int page, int size) {
+    @Transactional(readOnly = true)
+    public List<BlogResponseDto.FindBlog> findBlogList(Long categoryId, int page, int size) {
         return blogRepository.findBlogListByCategoryId(categoryId,page,size).orElseThrow(
                 () -> new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage() , ErrorCode.SELECT_ERROR));
     }
 
+    /**
+     * 블로그 목록 조회 요청을 처리한다 (최신 업데이트 순 , 카테고리 무관).
+     *
+     * @param userId Long
+     * @return BlogResponseDto.FindBlog List
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<BlogResponseDto.FindBlog> findLatestBlogList(Long userId) {
+        return blogRepository.findLatestBlogListByUserId(userId).orElseThrow(
+                () -> new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage() , ErrorCode.SELECT_ERROR));
+    }
 
     /**
      * 블로그 생성 요청을 처리한다.
@@ -60,6 +75,7 @@ public class BlogServiceImpl implements BlogService {
      * @return BlogResponseDto.CreateBlog
      */
     @Override
+    @Transactional
     public BlogResponseDto.CreateBlog createBlog(BlogRequestDto.CreateBlog requestDto) {
 
         // #1. 요청 유저의 정보를 토큰으로부터 조회
@@ -76,4 +92,30 @@ public class BlogServiceImpl implements BlogService {
         }
         return new BlogResponseDto.CreateBlog(category.getId(),saveBlog.getId(), user.getUserId());
     }
+
+
+    /**
+     * 블로그 삭제 요청을 처리한다.
+     *
+     * @param blogId Long
+     *  FIXME : 글 삭제에 대한 권한 검증을 인터셉터 or 필터 에서 처리하도록 생각할 것.
+     */
+    @Override
+    public void deleteBlog(Long blogId) {
+
+        // #1. api 접근 유저 정보 확인
+        UserDto user = TokenUtils.getUserFromAuthentication();
+
+        // #2.삭제 요청 블로그 조회
+        Blog findBlog = blogRepository.findById(blogId).orElseThrow(
+                () ->  new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage() , ErrorCode.SELECT_ERROR));
+
+        // #3. api 요청 유저의 pk 와 블로그 작성자의 pk가 동일하지 않은 경우 예외 처리
+        if (! user.getUserId().equals(findBlog.getUserId())) {
+            throw new BusinessExceptionHandler(ErrorCode.DELETE_ERROR.getMessage() , ErrorCode.DELETE_ERROR);
+        }
+        // #4. 삭제
+        blogRepository.delete(findBlog);
+    }
+
 }

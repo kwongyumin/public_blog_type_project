@@ -12,6 +12,7 @@ import com.example.blog.service.category.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @return CategoryResponseDto.FindCategory List
      */
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryResponseDto.FindCategory> findCategoryList(Long userId) {
         return categoryRepository.findCategoryListByUserId(userId).orElseThrow(
                 () -> new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage() , ErrorCode.SELECT_ERROR));
@@ -42,6 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
      * @return CategoryResponseDto.CreateCategory
      */
     @Override
+    @Transactional
     public CategoryResponseDto.CreateCategory createCategory(CategoryRequestDto.CreateCategory requestDto) {
 
         // #1. 요청 유저의 정보를 토큰으로부터 조회

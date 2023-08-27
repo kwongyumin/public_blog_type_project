@@ -49,6 +49,19 @@ public class BlogCustomRepositoryImpl implements BlogCustomRepository {
 
     }
 
+    @Override
+    public Optional<List<BlogResponseDto.FindBlog>> findLatestBlogListByUserId(Long userId) {
+
+        List<Blog> latestBlogList = queryFactory
+                .selectFrom(QBlog.blog)
+                .where(QBlog.blog.userId.eq(userId))
+                .orderBy(QBlog.blog.regTime.desc())
+                .limit(4)
+                .fetch();
+
+        return Optional.ofNullable(!CollectionUtils.isEmpty(latestBlogList) ? entityToFindBlogDtoList(latestBlogList) : null);
+    }
+
 
     /*******************************************************************************************************************
      * DESC : entity -> dto transferMethod

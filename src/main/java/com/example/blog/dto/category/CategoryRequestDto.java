@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @ApiModel(description = "카테고리 요청 파라미터 관리")
@@ -19,11 +20,11 @@ public class CategoryRequestDto {
     public static class CreateCategory {
 
         @ApiModelProperty(position = 1 , value ="카테고리 명",required = true)
-        @NotNull(message = "카테고리 명칭은 필수항목입니다.")
+        @NotEmpty(message = "카테고리 명칭은 필수항목입니다.")
         private String categoryName;
 
         @ApiModelProperty(position = 2 , value ="카테고리 컬러",required = true)
-        @NotNull(message = "카테고리 컬러는 필수항목입니다.")
+        @NotEmpty(message = "카테고리 컬러는 필수항목입니다.")
         private String categoryColor;
 
     }
@@ -35,11 +36,11 @@ public class CategoryRequestDto {
     public static class ModifyCategory {
 
         @ApiModelProperty(position = 1 , value ="카테고리 명",required = true)
-        @NotNull(message = "카테고리 명칭은 필수항목입니다.")
+        @NotEmpty(message = "카테고리 명칭은 필수항목입니다.")
         private String categoryName;
 
         @ApiModelProperty(position = 2 , value ="카테고리 컬러",required = true)
-        @NotNull(message = "카테고리 컬러는 필수항목입니다.")
+        @NotEmpty(message = "카테고리 컬러는 필수항목입니다.")
         private String categoryColor;
 
     }

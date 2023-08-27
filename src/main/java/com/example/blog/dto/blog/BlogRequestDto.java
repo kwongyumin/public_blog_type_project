@@ -56,9 +56,12 @@ public class BlogRequestDto {
     public static class ModifyBlog {
 
         @ApiModelProperty(position = 1 , value = "블로그 제목",required = true, example = "")
+        @NotEmpty(message = "블로그 제목은 필수항목입니다.")
         private String blogTitle;
 
         @ApiModelProperty(position = 2 , value = "블로그 내용",required = true, example = "")
+        @NotEmpty(message = "블로그 글 내용은 필수항목입니다.")
         private String blogContents;
     }
+
 }

@@ -30,6 +30,11 @@ public class UserCustomRepositoryImpl implements UserCumtomRepository {
         return Optional.ofNullable(user != null ? entityToUserDto(user) : null);
     }
 
+
+    /*******************************************************************************************************************
+     * DESC : entity -> dto transferMethod
+     *******************************************************************************************************************/
+
     private UserDto entityToUserDto(User user) {
         List<String> authorityList = user.getRoles().stream()
                 .map(Authority::getAuthorityName)

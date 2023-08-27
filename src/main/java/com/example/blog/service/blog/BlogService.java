@@ -15,11 +15,20 @@ public interface BlogService {
     /**
      *  DESC : 특정 카테고리 하위의 블로그 목록을 조회한다.
      */
-    List<BlogResponseDto.FindBlog> findBlog(Long categoryId, int page, int size);
+    List<BlogResponseDto.FindBlog> findBlogList(Long categoryId, int page, int size);
+
+    /**
+     *  DESC :   선택 블로그 유저의 최신 업데이트 블로그 4개를 조회한다.
+     */
+    List<BlogResponseDto.FindBlog> findLatestBlogList(Long userId);
 
     /**
      *  DESC : 블로그 생성 요청을 처리한다.
      */
     BlogResponseDto.CreateBlog createBlog(BlogRequestDto.CreateBlog requestDto);
 
+    /**
+     *  DESC : 블로그 삭제 요청을 처리한다.
+     */
+    void deleteBlog(Long blogId);
 }

@@ -29,6 +29,10 @@ public class CategoryCustomRepositoryImpl implements CategoryCustomRepository {
         return Optional.ofNullable(categoryList != null ? entityToFindCategoryDtoList(categoryList) : null);
     }
 
+    /*******************************************************************************************************************
+     * DESC : entity -> dto transferMethod
+     *******************************************************************************************************************/
+
     private List<CategoryResponseDto.FindCategory> entityToFindCategoryDtoList(List<Category> categoryList) {
         List<CategoryResponseDto.FindCategory> targetList = new ArrayList<>();
         if (!CollectionUtils.isEmpty(categoryList)) {

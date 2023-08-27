@@ -11,4 +11,7 @@ public interface BlogCustomRepository {
     Optional<BlogResponseDto.FindBlogDetail> findBlogDetailByBlogId(Long blogId);
 
     Optional<List<BlogResponseDto.FindBlog>> findBlogListByCategoryId(Long categoryId, int page, int size);
+
+    Optional<List<BlogResponseDto.FindBlog>> findLatestBlogListByUserId(Long userId);
+
 }
