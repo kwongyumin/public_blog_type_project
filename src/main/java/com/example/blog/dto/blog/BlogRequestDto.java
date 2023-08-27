@@ -17,6 +17,22 @@ public class BlogRequestDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
+    public static class FindBlog {
+
+        @ApiModelProperty(position = 1 ,  value = "카테고리 idx",required = true, example = "")
+        @NotNull(message = "카테고리 idx 는 필수항목입니다.")
+        private Long categoryId;
+
+        @ApiModelProperty(position = 3 , value = "블로그 내용",required = true, example = "")
+        @NotEmpty(message = "블로그 글 내용은 필수항목입니다.")
+        private String blogContents;
+    }
+
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
     public static class CreateBlog {
 
         @ApiModelProperty(position = 1 ,  value = "카테고리 idx",required = true, example = "")

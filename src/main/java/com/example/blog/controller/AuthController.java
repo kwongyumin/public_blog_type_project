@@ -5,7 +5,6 @@ import com.example.blog.common.constants.AuthConstants;
 import com.example.blog.common.response.ApiResult;
 import com.example.blog.dto.auth.AuthRequestDto;
 import com.example.blog.dto.auth.AuthResponseDto;
-import com.example.blog.dto.user.UserResponseDto;
 import com.example.blog.service.auth.AuthService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

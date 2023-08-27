@@ -26,26 +26,22 @@ public class CategoryCustomRepositoryImpl implements CategoryCustomRepository {
                 .selectFrom(QCategory.category)
                 .where(QCategory.category.userId.eq(userId))
                 .fetch();
-
-
-
-        return Optional.empty();
+        return Optional.ofNullable(categoryList != null ? entityToFindCategoryDtoList(categoryList) : null);
     }
 
     private List<CategoryResponseDto.FindCategory> entityToFindCategoryDtoList(List<Category> categoryList) {
         List<CategoryResponseDto.FindCategory> targetList = new ArrayList<>();
         if (!CollectionUtils.isEmpty(categoryList)) {
-            categoryList.stream().forEach(category -> {
+            categoryList.forEach(category -> {
                 CategoryResponseDto.FindCategory target = CategoryResponseDto.FindCategory.builder()
                         .userId(category.getUserId())
                         .categoryId(category.getId())
                         .categoryName(category.getCategoryName())
-                        .categoryColor(category.getColor())
+                        .categoryColor(category.getCategoryColor())
                         .build();
-
+                targetList.add(target);
             });
         }
-
         return targetList;
     }
 }

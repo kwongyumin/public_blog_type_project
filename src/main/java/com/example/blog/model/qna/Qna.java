@@ -26,10 +26,10 @@ public class Qna {
     private Long userId;
 
     @Column
-    private String title;
+    private String qnaTitle;
 
     @Column
-    private String contents;
+    private String qnaContents;
 
     @Column
     @LastModifiedDate // 수정 시간 자동 업데이트

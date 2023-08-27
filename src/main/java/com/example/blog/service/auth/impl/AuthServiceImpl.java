@@ -13,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -60,8 +58,8 @@ public class AuthServiceImpl implements AuthService {
     /**
      * 유저 입력 비밀번호 확인
      *
-     * @param inputPassword
-     * @param encryptedPassword
+     * @param inputPassword String
+     * @param encryptedPassword String
      * @return true | false
      */
     private boolean passwordValidator(String inputPassword, String encryptedPassword) {

@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,31 @@ public class BlogServiceImpl implements BlogService {
     private final CategoryRepository categoryRepository;
 
     private final BlogRepository blogRepository;
+
+
+    /**
+     * 블로그의 상세 내용을 조회한다
+     *
+     * @param blogId Long
+     * @return BlogResponseDto.FindBlog List
+     */
+    @Override
+    public BlogResponseDto.FindBlogDetail findBlogDetail(Long blogId) {
+        return blogRepository.findBlogDetailByBlogId(blogId).orElseThrow(
+                () -> new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage() , ErrorCode.SELECT_ERROR));
+    }
+
+    /**
+     * 블로그 목록 조회 요청을 처리한다.
+     *
+     * @param categoryId Long
+     * @return BlogResponseDto.FindBlog List
+     */
+    @Override
+    public List<BlogResponseDto.FindBlog> findBlog(Long categoryId, int page, int size) {
+        return blogRepository.findBlogListByCategoryId(categoryId,page,size).orElseThrow(
+                () -> new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage() , ErrorCode.SELECT_ERROR));
+    }
 
 
     /**
@@ -44,7 +71,7 @@ public class BlogServiceImpl implements BlogService {
         Blog blog = Blog.createBlog(user.getUserId(), requestDto, category);
         // #4. 블로그 정보 저장
         Blog saveBlog = blogRepository.save(blog);
-        if (saveBlog == null){
+        if (saveBlog.getId() < 1){
             throw new BusinessExceptionHandler(ErrorCode.INSERT_ERROR.getMessage() , ErrorCode.INSERT_ERROR);
         }
         return new BlogResponseDto.CreateBlog(category.getId(),saveBlog.getId(), user.getUserId());

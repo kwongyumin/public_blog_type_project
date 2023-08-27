@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 @Slf4j
 @Service
@@ -23,18 +24,15 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     /**
-     * 카테고리 생성 요청을 처리한다.
+     * 해당 유저의 생성된 카테고리 목록을 반환한다.
      *
      * @param userId Long
-     * @return CategoryResponseDto.FindCategory
+     * @return CategoryResponseDto.FindCategory List
      */
     @Override
-    public CategoryResponseDto.FindCategory findCategoryList(Long userId) {
-
-
-
-
-        return null;
+    public List<CategoryResponseDto.FindCategory> findCategoryList(Long userId) {
+        return categoryRepository.findCategoryListByUserId(userId).orElseThrow(
+                () -> new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage() , ErrorCode.SELECT_ERROR));
     }
 
     /**
@@ -52,7 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = Category.createCategory(user.getUserId(), requestDto);
         // #3. 카테고리 정보 저장
         Category saveCategory = categoryRepository.save(category);
-        if (saveCategory == null){
+        if (saveCategory.getId() < 1){
             throw new BusinessExceptionHandler(ErrorCode.INSERT_ERROR.getMessage() , ErrorCode.INSERT_ERROR);
         }
         return new CategoryResponseDto.CreateCategory(saveCategory.getId(),user.getUserId());

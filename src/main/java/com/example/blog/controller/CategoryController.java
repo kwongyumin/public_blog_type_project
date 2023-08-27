@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Api(tags = {"CATEGORY API"})
 @RestController
@@ -31,13 +32,13 @@ public class CategoryController {
      * @return ApiResponseWrapper<ApiResponse> : 응답 결과 및 응답 코드 반환
      */
     @GetMapping(value = "/list/{userId}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "카테고리 조회" , notes = "특정 유저의 블로그 카테고리 목록을 조회한다.", httpMethod = "GET")
+    @ApiOperation(value = "유저 카테고리 조회" , notes = "특정 유저가 생성한 카테고리 목록을 조회한다.", httpMethod = "GET")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success", response = CategoryResponseDto.FindCategory.class)
     })
     public ResponseEntity<ApiResult> findCategoryList(@PathVariable(name = "userId") Long userId){
-        CategoryResponseDto.FindCategory result  = categoryService.findCategoryList(userId);
-        ApiResult data = new ApiResult(result, SuccessCode.SELECT_SUCCESS.getStatus(),SuccessCode.SELECT_SUCCESS.getMessage());
+        List<CategoryResponseDto.FindCategory> resultList  = categoryService.findCategoryList(userId);
+        ApiResult data = new ApiResult(resultList, SuccessCode.SELECT_SUCCESS.getStatus(),SuccessCode.SELECT_SUCCESS.getMessage());
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
@@ -46,7 +47,7 @@ public class CategoryController {
      * @return ApiResponseWrapper<ApiResponse> : 응답 결과 및 응답 코드 반환
      */
     @PostMapping(value = "/create" , produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "카테고리 생성" , notes = "카테고리 생성 요청을 처리한다.", httpMethod = "POST")
+    @ApiOperation(value = "유저 카테고리 생성" , notes = "특정 유저의 카테고리 생성 요청을 처리한다.", httpMethod = "POST")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success", response = CategoryResponseDto.CreateCategory.class)
     })

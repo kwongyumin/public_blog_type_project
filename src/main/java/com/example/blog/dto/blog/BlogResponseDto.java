@@ -14,6 +14,46 @@ public class BlogResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
+    public static class FindBlog {
+
+        @ApiModelProperty(position = 1 ,  value = "유저 idx",required = true, example = "")
+        private Long userId;
+
+        @ApiModelProperty(position = 2 ,  value = "카테고리 idx",required = true, example = "")
+        private Long categoryId;
+
+        @ApiModelProperty(position = 3 ,  value = "블로그 idx",required = true, example = "")
+        private Long blogId;
+
+        @ApiModelProperty(position = 4 , value = "블로그 제목",required = true, example = "")
+        private String blogTitle;
+
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class FindBlogDetail {
+
+        @ApiModelProperty(position = 1 ,  value = "유저 idx",required = true, example = "")
+        private Long userId;
+
+        @ApiModelProperty(position = 2 ,  value = "블로그 idx",required = true, example = "")
+        private Long blogId;
+
+        @ApiModelProperty(position = 3, value = "블로그 제목",required = true, example = "")
+        private String blogTitle;
+
+        @ApiModelProperty(position = 4 , value = "블로그 내용",required = true, example = "")
+        private String blogContents;
+
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
     public static class CreateBlog {
 
         @ApiModelProperty(position = 1 ,  value = "카테고리 idx",required = true, example = "")

@@ -29,10 +29,10 @@ public class Blog {
     private Long userId;
 
     @Column
-    private String title;
+    private String blogTitle;
 
     @Column
-    private String contents;
+    private String blogContents;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
@@ -58,8 +58,8 @@ public class Blog {
     public static Blog createBlog(Long userId, BlogRequestDto.CreateBlog requestDto, Category category){
         Blog blog = Blog.builder()
                 .userId(userId)
-                .title(requestDto.getBlogTitle())
-                .contents(requestDto.getBlogContents())
+                .blogTitle(requestDto.getBlogTitle())
+                .blogContents(requestDto.getBlogContents())
                 .build();
         if (category != null) {
             blog.setCategory(category);

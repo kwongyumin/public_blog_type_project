@@ -54,13 +54,11 @@ public class Category {
     }
 
     public static Category createCategory(Long userId , CategoryRequestDto.CreateCategory requestDto) {
-        Category category = Category.builder()
+        return Category.builder()
                 .userId(userId)
                 .categoryName(requestDto.getCategoryName())
                 .categoryColor(requestDto.getCategoryColor())
                 .build();
-
-        return category;
     }
 
 
