@@ -55,6 +55,24 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
+    /**
+     * 카카오톡 정보를 기반으로 유저 토큰발급 및 회원가입 처리.
+     *
+     * @param code String
+     * @return AuthResponseDto.GenerateUserToken
+     */
+    @Override
+    @Transactional
+    public AuthResponseDto.GenerateUserToken generateKakaoToken(String code) {
+
+
+
+
+
+
+        return null;
+    }
+
 
 
     /**
