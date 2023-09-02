@@ -37,7 +37,7 @@ public class User {
     private Long kakaoId;
 
     @Column
-    private LoginType loginType;
+    private OAuthType oAuthType;
 
     @Column
     private String userName;
@@ -68,11 +68,10 @@ public class User {
         role.forEach(o -> o.setUser(this));
     }
 
-
     // FIXME : 우선 로그인 타입별 셋팅 구조 -> 카카오 로그인 추가 후 다시 생각 필요
     public static User setDefaultUser(UserRequestDto.JoinUser requestDto, PasswordEncoder passwordEncoder){
         User user = User.builder()
-                .loginType(LoginType.DEFAULT)
+                .oAuthType(OAuthType.DEFAULT)
                 .userName(requestDto.getUserName())
                 .nickName(requestDto.getNickName())
                 .password(passwordEncoder.encode(requestDto.getUserPassword()))
@@ -90,7 +89,12 @@ public class User {
         return user;
     }
     public static User setKakaoUser(){
-        return User.builder()
+        User kakaoUser = User.builder()
+                .oAuthType(OAuthType.KAKAO)
+
+
                 .build();
+
+        return null;
     }
 }

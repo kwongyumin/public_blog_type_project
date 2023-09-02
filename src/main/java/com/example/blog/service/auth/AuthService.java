@@ -14,5 +14,10 @@ public interface AuthService {
     /**
      *  DESC : 토큰발급 처리 , 카카오톡 정보를 기반으로 유저의 토큰 발급 및 회원가입을 처리
      */
-    AuthResponseDto.GenerateUserToken generateKakaoToken(String code);
+    AuthResponseDto.GenerateUserToken generateUserTokenFromKakao(AuthRequestDto.GenerateUserTokenFromKakao requestDto);
+
+    /**
+     *  DESC : 토큰발급 처리 , 네이버 정보를 기반으로 유저의 토큰 발급 및 회원가입을 처리
+     */
+    AuthResponseDto.GenerateUserToken generateUserTokenFromNaver(AuthRequestDto.GenerateUserTokenFromNaver requestDto);
 }

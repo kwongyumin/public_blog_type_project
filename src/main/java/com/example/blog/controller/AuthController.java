@@ -35,14 +35,14 @@ public class AuthController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success", response = AuthResponseDto.GenerateUserToken.class)
     })
-    public ResponseEntity<ApiResult> generateToken(@Valid @RequestBody AuthRequestDto.GenerateUserToken userAuthRequestDto){
+    public ResponseEntity<ApiResult> generateUserToken(@Valid @RequestBody AuthRequestDto.GenerateUserToken userAuthRequestDto){
         AuthResponseDto.GenerateUserToken result  = authService.generateUserToken(userAuthRequestDto, AuthConstants.ROLE_USER);
         ApiResult data = new ApiResult(result, SuccessCode.TOKEN_ISSUED_SUCCESS.getStatus(),SuccessCode.TOKEN_ISSUED_SUCCESS.getMessage());
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     /**
-     * @param code String
+     * @param kakaoAuthRequestDto AuthRequestDto.GenerateUserTokenFromKakao
      * @return ApiResponseWrapper<ApiResponse> : 응답 결과 및 응답 코드 반환
      */
     @PostMapping(value = "/generate-kakao-token" , produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,8 +50,23 @@ public class AuthController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success", response = AuthResponseDto.GenerateUserToken.class)
     })
-    public ResponseEntity<ApiResult> generateKakaoToken(@RequestParam(name = "code") String code){
-        AuthResponseDto.GenerateUserToken result  = authService.generateKakaoToken(code);
+    public ResponseEntity<ApiResult> generateUserTokenFromKakao(@Valid @RequestBody AuthRequestDto.GenerateUserTokenFromKakao kakaoAuthRequestDto){
+        AuthResponseDto.GenerateUserToken result  = authService.generateUserTokenFromKakao(kakaoAuthRequestDto);
+        ApiResult data = new ApiResult(result, SuccessCode.TOKEN_ISSUED_SUCCESS.getStatus(),SuccessCode.TOKEN_ISSUED_SUCCESS.getMessage());
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    /**
+     * @param naverAuthRequestDto AuthRequestDto.GenerateUserTokenFromNaver
+     * @return ApiResponseWrapper<ApiResponse> : 응답 결과 및 응답 코드 반환
+     */
+    @PostMapping(value = "/generate-naver-token" , produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "토큰 발급 요청 (네이버 로그인)" , notes = "네이버 유저 정보를 기반으로 토큰 발급 처리와 동시에 서비스 회원가입을 처리한다.", httpMethod = "POST")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "success", response = AuthResponseDto.GenerateUserToken.class)
+    })
+    public ResponseEntity<ApiResult> generateUserTokenFromNaver(@Valid @RequestBody AuthRequestDto.GenerateUserTokenFromNaver naverAuthRequestDto){
+        AuthResponseDto.GenerateUserToken result  = authService.generateUserTokenFromNaver(naverAuthRequestDto);
         ApiResult data = new ApiResult(result, SuccessCode.TOKEN_ISSUED_SUCCESS.getStatus(),SuccessCode.TOKEN_ISSUED_SUCCESS.getMessage());
         return new ResponseEntity<>(data, HttpStatus.OK);
     }

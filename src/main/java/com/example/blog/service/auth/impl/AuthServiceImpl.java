@@ -30,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
      * @param requestDto AuthRequestDto.GenerateUserToken
      * @param roleUser String
      * @return AuthResponseDto.GenerateUserToken
-     *   NOTE : 비회원 토큰 발급 추가 예정 ->
+     *   FIXME  :: 비회원 토큰 발급 추가 예정 ->
      */
     @Override
     @Transactional
@@ -58,12 +58,27 @@ public class AuthServiceImpl implements AuthService {
     /**
      * 카카오톡 정보를 기반으로 유저 토큰발급 및 회원가입 처리.
      *
-     * @param code String
+     * @param requestDto AuthRequestDto.GenerateUserTokenFromKakao
      * @return AuthResponseDto.GenerateUserToken
      */
     @Override
     @Transactional
-    public AuthResponseDto.GenerateUserToken generateKakaoToken(String code) {
+    public AuthResponseDto.GenerateUserToken generateUserTokenFromKakao(AuthRequestDto.GenerateUserTokenFromKakao requestDto) {
+
+
+
+
+        return null;
+    }
+
+    /**
+     * 네이버 정보를 기반으로 유저 토큰발급 및 회원가입 처리.
+     *
+     * @param requestDto AuthRequestDto.GenerateUserTokenFromNaver
+     * @return AuthResponseDto.GenerateUserToken
+     */
+    @Override
+    public AuthResponseDto.GenerateUserToken generateUserTokenFromNaver(AuthRequestDto.GenerateUserTokenFromNaver requestDto) {
 
 
 
@@ -83,11 +98,7 @@ public class AuthServiceImpl implements AuthService {
      * @return true | false
      */
     private boolean passwordValidator(String inputPassword, String encryptedPassword) {
-        if (passwordEncoder.matches(inputPassword, encryptedPassword)){
-            return true;
-        } else {
-            return false;
-        }
+        return passwordEncoder.matches(inputPassword, encryptedPassword);
     }
 
 
