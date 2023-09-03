@@ -6,7 +6,7 @@ import com.example.blog.model.user.OAuthType;
  *  Oauth 응답 공통
  */
 public interface OAuthInfoResponse {
-    String getEmail();
+    String getUserEmail();
     String getNickname();
     OAuthType getOAuthType();
 }

@@ -104,7 +104,7 @@ public class AuthResponseDto {
         }
 
         @Override
-        public String getEmail() {
+        public String getUserEmail() {
             return kakaoAccount.email;
         }
 
@@ -135,7 +135,7 @@ public class AuthResponseDto {
         }
 
         @Override
-        public String getEmail() {
+        public String getUserEmail() {
             return response.email;
         }
 
