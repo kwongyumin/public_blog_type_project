@@ -66,8 +66,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public AuthResponseDto.GenerateUserToken generateUserTokenFromKakao(AuthRequestDto.GenerateUserTokenFromKakao requestDto) {
-
         // #1. 카카오 정보 기반 유저정보 조회
+        // FIXME : 중복되어 사용되어지는 코드에 대하여 처리하는 방식에 대해 생각해보기.
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfo.request(requestDto);
 
         // #2. 카카오 인증 서버로부터 조회한 유저 이메일 -> 유저정보 조회
@@ -92,13 +92,22 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public AuthResponseDto.GenerateUserToken generateUserTokenFromNaver(AuthRequestDto.GenerateUserTokenFromNaver requestDto) {
+        // #1. 네이버 정보 기반 유저정보 조회
+        OAuthInfoResponse oAuthInfoResponse = requestOAuthInfo.request(requestDto);
 
+        // #2. 네이버 인증 서버로부터 조회한 유저 이메일 -> 유저정보 조회
+        // FIXME : 회원 정보 존재하지 않을 시 , 회원가입 처리
+        UserDto user = userRepository.findUserByEmail(oAuthInfoResponse.getUserEmail()).orElseThrow(
+                () -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER.getMessage(), ErrorCode.NOT_FOUND_USER));
 
+        // #3. 토큰생성
+        String authToken = TokenUtils.generateJwtToken(user);
+        if (authToken == null || authToken.isEmpty()) {
+            throw new BusinessExceptionHandler(ErrorCode.AUTH_TOKEN_IS_NULL.getMessage(), ErrorCode.AUTH_TOKEN_IS_NULL);
+        }
 
-        return null;
+        return new AuthResponseDto.GenerateUserToken(user.getUserId(),authToken);
     }
-
-
 
     /**
      * 유저 입력 비밀번호 확인
@@ -110,6 +119,7 @@ public class AuthServiceImpl implements AuthService {
     private boolean passwordValidator(String inputPassword, String encryptedPassword) {
         return passwordEncoder.matches(inputPassword, encryptedPassword);
     }
+
 
 
 
