@@ -95,17 +95,32 @@ public class AuthResponseDto {
         static class KakaoAccount {
             private KakaoProfile profile;
             private String email;
+
+            private String name;
         }
 
         @Getter
         @JsonIgnoreProperties(ignoreUnknown = true)
         static class KakaoProfile {
             private String nickname;
+
+            @JsonProperty("is_default_image")
+            private String isDefaultImage;
         }
 
         @Override
         public String getUserEmail() {
             return kakaoAccount.email;
+        }
+
+        @Override
+        public String getUserName() {
+            return kakaoAccount.name;
+        }
+
+        @Override
+        public String getDefaultImageUrl() {
+            return kakaoAccount.profile.isDefaultImage;
         }
 
         @Override
@@ -137,6 +152,16 @@ public class AuthResponseDto {
         @Override
         public String getUserEmail() {
             return response.email;
+        }
+
+        @Override
+        public String getUserName() {
+            return null;
+        }
+
+        @Override
+        public String getDefaultImageUrl() {
+            return null;
         }
 
         @Override

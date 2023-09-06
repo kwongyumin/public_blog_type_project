@@ -7,6 +7,8 @@ import com.example.blog.model.user.OAuthType;
  */
 public interface OAuthInfoResponse {
     String getUserEmail();
+    String getUserName();
+    String getDefaultImageUrl();
     String getNickname();
     OAuthType getOAuthType();
 }

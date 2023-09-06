@@ -2,6 +2,7 @@ package com.example.blog.model.user;
 
 
 import com.example.blog.common.constants.AuthConstants;
+import com.example.blog.dto.auth.OAuthInfoResponse;
 import com.example.blog.dto.user.UserRequestDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -68,33 +69,47 @@ public class User {
         role.forEach(o -> o.setUser(this));
     }
 
-    // FIXME : 우선 로그인 타입별 셋팅 구조 -> 카카오 로그인 추가 후 다시 생각 필요
+    /**
+     *  일반 유저 정보 셋팅
+     */
     public static User setDefaultUser(UserRequestDto.JoinUser requestDto, PasswordEncoder passwordEncoder){
-        User user = User.builder()
+        User defaultUser = User.builder()
                 .oAuthType(OAuthType.DEFAULT)
                 .userName(requestDto.getUserName())
                 .nickName(requestDto.getNickName())
                 .password(passwordEncoder.encode(requestDto.getUserPassword()))
                 .email(requestDto.getUserEmail())
                 .build();
+        defaultUser.setRoles(buildUserAuthority());
 
-        // FIXME : 현재 기준으로는 회원 가입 -> 유저 권한을 의미 , 어드민 추가 전 까지는 변동사항 x
+        return defaultUser;
+    }
+
+    /**
+     *  OAuth 정보 기반 유저 정보 셋팅
+     */
+    public static User setOAuthUser(OAuthInfoResponse oAuthInfoResponse){
+        User oAuthUser = User.builder()
+                .email(oAuthInfoResponse.getUserEmail())
+                .userName(oAuthInfoResponse.getUserName())
+                .nickName(oAuthInfoResponse.getNickname())
+                .oAuthType(oAuthInfoResponse.getOAuthType())
+                .build();
+        oAuthUser.setRoles(buildUserAuthority());
+        return oAuthUser;
+    }
+
+    /**
+     *  유저권한 셋팅
+     */
+    private static List<Authority> buildUserAuthority() {
         List<Authority> authList = new ArrayList<>();
         Authority auth = Authority.builder()
                 .authorityName(AuthConstants.ROLE_USER)
                 .build();
         authList.add(auth);
-
-        user.setRoles(authList);
-        return user;
+        return authList;
     }
-    public static User setKakaoUser(){
-        User kakaoUser = User.builder()
-                .oAuthType(OAuthType.KAKAO)
 
 
-                .build();
-
-        return null;
-    }
 }
