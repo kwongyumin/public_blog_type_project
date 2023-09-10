@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -14,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class UserRequestDto {
 
     @Getter
-    @Builder
+    @NoArgsConstructor
     public static class JoinUser {
 
         @ApiModelProperty(position = 1 ,  value = "사용자 명", required = true, example = "")
@@ -25,7 +26,6 @@ public class UserRequestDto {
         private String nickName;
 
         @ApiModelProperty(position = 3 ,  value = "사용자 이메일 (ID)", required = true, example = "")
-        @Email
         @NotEmpty(message = "사용자 이메일(ID) 은 필수항목입니다.")
         private String userEmail;
 

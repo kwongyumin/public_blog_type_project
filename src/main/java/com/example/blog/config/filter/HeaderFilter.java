@@ -16,8 +16,8 @@ public class HeaderFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        System.out.println("[HeaderFilter ] :: " );
         HttpServletResponse res = (HttpServletResponse) response;
-        // FIXME : 운영 적용 시 , 변경 필요
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
         res.setHeader("Access-Control-Max-Age", "3600");
@@ -27,6 +27,9 @@ public class HeaderFilter implements Filter {
         );
         res.setHeader("Access-Control-Allow-Credentials", "false");
 
-        chain.doFilter(request, response);
+       chain.doFilter(request, response);
+
     }
+
+
 }

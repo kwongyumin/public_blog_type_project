@@ -8,6 +8,7 @@ import com.example.blog.service.user.impl.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,9 +33,8 @@ public class TokenUtils {
 
     private static UserService userService;
 
-    // FIXME : 환경파일에 등록 필요
-    //    @Value(value = "${custom.jwt-secret-key}")
-    private static final String jwtSecretKey = "exampleSecretKey";
+    @Value(value = "${jwt.secret-key}")
+    private static String jwtSecretKey;
 
     private static UserDetailsServiceImpl userDetailsService;
     /**
@@ -225,11 +225,8 @@ public class TokenUtils {
                 .userEmail(userDetails.getUsername())
                 .build();
 
-        UserDto user = userService.findUserByEmail(userDto).orElseThrow(
-                () -> new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage() , ErrorCode.SELECT_ERROR)
-        );
-
-        return user;
+        return userService.findUserByEmail(userDto).orElseThrow(
+                () -> new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage() , ErrorCode.SELECT_ERROR));
     }
 
 }

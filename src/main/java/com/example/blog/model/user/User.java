@@ -77,8 +77,8 @@ public class User {
                 .oAuthType(OAuthType.DEFAULT)
                 .userName(requestDto.getUserName())
                 .nickName(requestDto.getNickName())
-                .password(passwordEncoder.encode(requestDto.getUserPassword()))
                 .email(requestDto.getUserEmail())
+                .password(passwordEncoder.encode(requestDto.getUserPassword()))
                 .build();
         defaultUser.setRoles(buildUserAuthority());
 

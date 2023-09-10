@@ -50,13 +50,7 @@ dependencies {
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     // jpa 외 쿼리 로깅 추가  ,
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
-    /* FIXME :  제거 예정
-        #p6spy query logging
-        decorator:
-            datasource:
-                p6spy:
-                    enable-logging: true
-     */
+
     // jwt
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     // Spring Security

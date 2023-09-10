@@ -19,7 +19,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+import javax.swing.*;
 
 /**
  * Spring Security 의 환경설정을 구성하기 위한 클래스
@@ -29,7 +32,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Slf4j
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfiguration {
+public class WebSecurityConfig {
 
     /**
      * 1. 정적 자원(Resource)에 대해서 인증된 사용자가  정적 자원의 접근에 대해 ‘인가’에 대한 설정을 담당하는 메서드이다.
@@ -54,6 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        System.out.println(" WebSecurityConfig Start !!! ");
         log.debug("[+] WebSecurityConfig Start !!! ");
 
         http
@@ -65,7 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
                 // FIXME : 회원/ 비회원 권한 설정 필요
                 .authorizeHttpRequests(authz -> authz
                         .antMatchers("/user/join").permitAll()
-                        .antMatchers("/auth/generate-token").permitAll()
+                        .antMatchers("/auth/**").permitAll()
                         .antMatchers("/user/**").hasAnyRole("USER") // hasAnyRole -> ROLE x
                         .anyRequest().permitAll())
 
@@ -79,9 +83,9 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
                 .and()
                 // [STEP5] form 기반의 로그인에 대해 비 활성화하며 커스텀으로 구성한 필터를 사용한다.
                 .formLogin().disable();
-
+        System.out.println("[WebSecurity] :: ");
                // [STEP6] Spring Security Custom Filter Load - Form '인증'에 대해서 사용
-               // .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // [STEP7] 최종 구성한 값을 사용함.
         return http.build();
@@ -94,10 +98,10 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
      *
      * @return AuthenticationManager
      */
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        return new ProviderManager(customAuthenticationProvider());
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager() {
+//        return new ProviderManager(customAuthenticationProvider());
+//    }
 
     /**
      * 4. '인증' 제공자로 사용자의 이름과 비밀번호가 요구됩니다.
@@ -105,10 +109,10 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
      *
      * @return CustomAuthenticationProvider
      */
-    @Bean
-    public CustomAuthenticationProvider customAuthenticationProvider() {
-        return new CustomAuthenticationProvider(bCryptPasswordEncoder());
-    }
+//    @Bean
+//    public CustomAuthenticationProvider customAuthenticationProvider() {
+//        return new CustomAuthenticationProvider(bCryptPasswordEncoder());
+//    }
 
     /**
      * 5. 비밀번호를 암호화하기 위한 BCrypt 인코딩을 통하여 비밀번호에 대한 암호화를 수행합니다.
@@ -125,44 +129,43 @@ public class WebSecurityConfig extends WebSecurityConfiguration {
      *
      * @return CustomAuthenticationFilter
      */
-    @Bean
-    public CustomAuthenticationFilter customAuthenticationFilter() {
-        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
-        // NOTE 1: 세션기반의 인증방식은 사용하지 않을 것이므로 비즈니스 로직만 구현한 상태
-        // FIXME 2: JWT 사용 , 세션기반 인증방식 필터 주석 처리
-        customAuthenticationFilter.setFilterProcessesUrl("");     // 접근 URL
-        customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());    // '인증' 성공 시 해당 핸들러로 처리를 전가한다.
-        customAuthenticationFilter.setAuthenticationFailureHandler(customLoginFailureHandler());    // '인증' 실패 시 해당 핸들러로 처리를 전가한다.
-        customAuthenticationFilter.afterPropertiesSet();
-        return customAuthenticationFilter;
-    }
+//    @Bean
+//    public CustomAuthenticationFilter customAuthenticationFilter() {
+//        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager());
+//        // NOTE 1: 세션기반의 인증방식은 사용하지 않을 것이므로 비즈니스 로직만 구현한 상태
+//        // FIXME 2: JWT 사용 , 세션기반 인증방식 필터 주석 처리
+//        customAuthenticationFilter.setFilterProcessesUrl("");     // 접근 URL
+//        customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());    // '인증' 성공 시 해당 핸들러로 처리를 전가한다.
+//        customAuthenticationFilter.setAuthenticationFailureHandler(customLoginFailureHandler());    // '인증' 실패 시 해당 핸들러로 처리를 전가한다.
+//        customAuthenticationFilter.afterPropertiesSet();
+//        return customAuthenticationFilter;
+//    }
 
     /**
      * 7. Spring Security 기반의 사용자의 정보가 맞을 경우 수행이 되며 결과값을 리턴해주는 Handler
      *
      * @return CustomLoginSuccessHandler
      */
-    @Bean
-    public CustomAuthSuccessHandler customLoginSuccessHandler() {
-        return new CustomAuthSuccessHandler();
-    }
+//    @Bean
+//    public CustomAuthSuccessHandler customLoginSuccessHandler() {
+//        return new CustomAuthSuccessHandler();
+//    }
 
-    /**
+     /**
      * 8. Spring Security 기반의 사용자의 정보가 맞지 않을 경우 수행이 되며 결과값을 리턴해주는 Handler
      *
      * @return CustomAuthFailureHandler
      */
-    @Bean
-    public CustomAuthFailureHandler customLoginFailureHandler() {
-        return new CustomAuthFailureHandler();
-    }
+//    @Bean
+//    public CustomAuthFailureHandler customLoginFailureHandler() {
+//        return new CustomAuthFailureHandler();
+//    }
 
     /**
      * 9. JWT 토큰을 통하여서 사용자를 인증합니다.
      *
      * @return JwtAuthorizationFilter
      */
-    @Bean
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
         return new JwtAuthorizationFilter();
     }
