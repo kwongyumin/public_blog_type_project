@@ -43,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
         UserDto user = userRepository.findUserByEmail(requestDto.getUserEmail()).orElseThrow(
                 () -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER.getMessage(), ErrorCode.NOT_FOUND_USER));
 
-        // #2. 패스워드 검증
+        // #2. 패스워드 검증 -> 매치가 된다면 true
         if (!passwordValidator(requestDto.getPassword(), user.getUserPassword())){
             throw new BusinessExceptionHandler(ErrorCode.NOT_VALID_PASSWORD.getMessage(), ErrorCode.NOT_VALID_PASSWORD);
         }

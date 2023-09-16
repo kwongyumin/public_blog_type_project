@@ -3,6 +3,7 @@ package com.example.blog.dto.user;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,9 @@ import javax.validation.constraints.NotNull;
 public class UserRequestDto {
 
     @Getter
+    @AllArgsConstructor
     @NoArgsConstructor
+    @Builder
     public static class JoinUser {
 
         @ApiModelProperty(position = 1 ,  value = "사용자 명", required = true, example = "")

@@ -4,9 +4,10 @@ import com.example.blog.dto.user.UserDto;
 import com.example.blog.model.user.Authority;
 import com.example.blog.model.user.QUser;
 import com.example.blog.model.user.User;
-import com.example.blog.repository.user.UserCumtomRepository;
+import com.example.blog.repository.user.UserCustomRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,9 +15,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
-public class UserCustomRepositoryImpl implements UserCumtomRepository {
+public class UserCustomRepositoryImpl implements UserCustomRepository {
 
     private final JPAQueryFactory queryFactory;
 
@@ -44,6 +46,7 @@ public class UserCustomRepositoryImpl implements UserCumtomRepository {
                 .userId(user.getId())
                 .userName(user.getUserName())
                 .userEmail(user.getEmail())
+                .userPassword(user.getPassword())
                 .authorityList(authorityList)
                 .build();
     }

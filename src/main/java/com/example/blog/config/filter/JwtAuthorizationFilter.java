@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.SignatureException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,6 @@ import java.util.List;
  * @fileName JwtAuthorizationFilter
  */
 @Slf4j
-@Component
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
 
@@ -42,20 +42,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain)
             throws IOException, ServletException {
 
-        // 1. 토큰이 필요하지 않은 API URL에 대해서 배열로 구성합니다.
-        List<String> list = Arrays.asList("/favicon.ico","/swagger-ui/index.html","/swagger-ui.html","/auth/generate-token","/auth/generate-kakao-token","/auth/generate-naver-token","/user/join");
-        System.out.println(list.toString());
-
-        // 2. 토큰이 필요하지 않은 API URL의 경우 => 로직 처리 없이 다음 필터로 이동
-        // NOTE : 현재로써는 다음 필터가 없으므로 서블릿으로 전달
-        System.out.println("[before_JwtFilter_return_url] :: " + request.getRequestURI().toString());
-        if (list.contains(request.getRequestURI())) {
-            System.out.println("[after_JwtFilter_return_url] :: " + request.getRequestURI().toString());
-            chain.doFilter(request, response);
-            return;
-        }
-
-        // 3. OPTIONS(preflight request) 요청일 경우 => 로직 처리 없이 다음 필터로 이동
+        // 1. OPTIONS(preflight request) 요청일 경우 => 로직 처리 없이 다음 필터로 이동
         if (request.getMethod().equalsIgnoreCase("OPTIONS")) {
             chain.doFilter(request, response);
             return;
@@ -63,7 +50,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         // [STEP1] Client에서 API를 요청할때 Header를 확인합니다.
         String header = request.getHeader(AuthConstants.AUTH_HEADER);
-        System.out.println("[+] header Check: " + header);
         logger.debug("[+] header Check: " + header);
 
         try {

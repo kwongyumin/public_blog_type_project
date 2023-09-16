@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
@@ -31,9 +32,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TokenUtils {
 
+    @PostConstruct
+    public void init() {
+        jwtSecretKey = getJwtSecretKey;
+    }
+
     private static UserService userService;
 
     @Value(value = "${jwt.secret-key}")
+    private String getJwtSecretKey;
+
     private static String jwtSecretKey;
 
     private static UserDetailsServiceImpl userDetailsService;

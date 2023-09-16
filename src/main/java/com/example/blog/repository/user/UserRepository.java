@@ -3,5 +3,5 @@ package com.example.blog.repository.user;
 import com.example.blog.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User,Long>, UserCumtomRepository {
+public interface UserRepository extends JpaRepository<User,Long>, UserCustomRepository {
 }

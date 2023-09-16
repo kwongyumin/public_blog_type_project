@@ -3,8 +3,10 @@ package com.example.blog.dto.auth;
 import com.example.blog.model.user.OAuthType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -15,6 +17,8 @@ import javax.validation.constraints.NotEmpty;
 public class AuthRequestDto {
 
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Builder
     public static class GenerateUserToken {
 
@@ -30,13 +34,17 @@ public class AuthRequestDto {
     }
 
 
-    @Getter
-    @Builder
-    public static class GenerateGuestToken {
+//    @Getter
+//    @AllArgsConstructor
+//    @NoArgsConstructor
+//    @Builder
+//    public static class GenerateGuestToken {
+//
+//    }
 
-    }
-
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Builder
     public static class GenerateUserTokenFromKakao implements OAuthRequestParams {
 
@@ -58,6 +66,8 @@ public class AuthRequestDto {
     }
 
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Builder
     public static class GenerateUserTokenFromNaver implements OAuthRequestParams {
 

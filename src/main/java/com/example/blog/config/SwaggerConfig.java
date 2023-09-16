@@ -30,14 +30,14 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.example.blog.controller"))
+                .apis(RequestHandlerSelectors.basePackage(BASE_PACKAGE_PATH))
                 .paths(PathSelectors.any())
                 .paths(PathSelectors.ant("/**"))
                 .build()
                 .groupName("API 1.0.0") // group별 명칭을 주어야 한다.
                 .pathMapping("/")
-//                .securityContexts(Collections.singletonList(securityContext()))
-//                .securitySchemes(Collections.singletonList(apiKey()))
+                .securityContexts(Collections.singletonList(securityContext()))
+                .securitySchemes(Collections.singletonList(apiKey()))
                 .apiInfo(apiInfo());
     }
 
@@ -52,24 +52,24 @@ public class SwaggerConfig {
     }
 
     // FIXME : JWT 인증 로직 추가 후 스웨거 인증 같이 추가 예정
-//    private ApiKey apiKey() {
-//        return new ApiKey("JWT", "Authorization", "header");
-//    }
-//
-//    private SecurityContext securityContext() {
-//        return springfox
-//                .documentation
-//                .spi.service
-//                .contexts
-//                .SecurityContext
-//                .builder()
-//                .securityReferences(defaultAuth()).forPaths(PathSelectors.any()).build();
-//    }
-//
-//    List<SecurityReference> defaultAuth() {
-//        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
-//        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-//        authorizationScopes[0] = authorizationScope;
-//        return Collections.singletonList(new SecurityReference("JWT", authorizationScopes));
-//    }
+    private ApiKey apiKey() {
+        return new ApiKey("JWT", "Authorization", "header");
+    }
+
+    private SecurityContext securityContext() {
+        return springfox
+                .documentation
+                .spi.service
+                .contexts
+                .SecurityContext
+                .builder()
+                .securityReferences(defaultAuth()).forPaths(PathSelectors.any()).build();
+    }
+
+    List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Collections.singletonList(new SecurityReference("JWT", authorizationScopes));
+    }
 }

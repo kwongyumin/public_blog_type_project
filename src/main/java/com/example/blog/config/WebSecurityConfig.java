@@ -10,11 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,13 +44,8 @@ public class WebSecurityConfig {
      */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        // 정적 자원에 대해서 Security를 적용하지 않음으로 설정
-        return web -> web.ignoring()
-                .antMatchers(CUSTOM_AUTH_WHITELIST)
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        return web -> web.ignoring().antMatchers(CUSTOM_AUTH_WHITELIST);
     }
-
-
     /**
      * 2. HTTP에 대해서 ‘인증’과 ‘인가’를 담당하는 메서드이며 필터를 통해 인증 방식과 인증 절차에 대해서 등록하며 설정을 담당하는 메서드이다.
      *
@@ -57,9 +55,7 @@ public class WebSecurityConfig {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        System.out.println(" WebSecurityConfig Start !!! ");
         log.debug("[+] WebSecurityConfig Start !!! ");
-
         http
 
                 // [STEP1] 서버에 인증정보를 저장하지 않기에 csrf(Cross Site Request Forgery[사이트 간 요청 위조])를 사용하지 않는다.
@@ -68,10 +64,8 @@ public class WebSecurityConfig {
                 // NOTE : [STEP2] 토큰을 활용하는 경우 모든 요청에 대해 '인가'에 대해서 적용
                 // FIXME : 회원/ 비회원 권한 설정 필요
                 .authorizeHttpRequests(authz -> authz
-                        .antMatchers("/user/join").permitAll()
-                        .antMatchers("/auth/**").permitAll()
-                        .antMatchers("/user/**").hasAnyRole("USER") // hasAnyRole -> ROLE x
-                        .anyRequest().permitAll())
+                        .antMatchers("/user/**").hasAnyRole("USER") // hasAnyRole -> ROLE x 테스트 필요!
+                        .anyRequest().authenticated())
 
                 // [STEP3] Spring Security JWT Filter Load
                 .addFilterBefore(jwtAuthorizationFilter(), BasicAuthenticationFilter.class)
@@ -83,9 +77,6 @@ public class WebSecurityConfig {
                 .and()
                 // [STEP5] form 기반의 로그인에 대해 비 활성화하며 커스텀으로 구성한 필터를 사용한다.
                 .formLogin().disable();
-        System.out.println("[WebSecurity] :: ");
-               // [STEP6] Spring Security Custom Filter Load - Form '인증'에 대해서 사용
-//                .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         // [STEP7] 최종 구성한 값을 사용함.
         return http.build();
@@ -174,6 +165,7 @@ public class WebSecurityConfig {
      * 정적 파일 요청 무시
      */
     private static final String[] CUSTOM_AUTH_WHITELIST = {
+            // 스웨거 , 정적 파일 관련
             "/v2/api-docs",
             "/v3/api-docs/**",
             "/configuration/ui",
@@ -185,7 +177,11 @@ public class WebSecurityConfig {
             "/image/**",
             "/swagger/**",
             "/swagger-ui/**",
-            "/h2/**"
+            "/h2/**",
+            "/favicon.ico",
+            "/swagger-ui/index.html",
+            "/user/join", // 회원가입
+            "/auth/**" // 토큰발급
     };
 
 

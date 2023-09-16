@@ -5,7 +5,7 @@ import com.example.blog.dto.user.UserDto;
 
 import java.util.Optional;
 
-public interface UserCumtomRepository {
+public interface UserCustomRepository {
 
     Optional<UserDto> findUserByEmail(String email);
 }
