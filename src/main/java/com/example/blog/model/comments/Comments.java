@@ -1,6 +1,5 @@
-package com.example.blog.model.qna;
+package com.example.blog.model.comments;
 
-import com.example.blog.dto.qna.QnaRequestDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -17,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @EnableJpaAuditing // Auditing 활성화
 @EntityListeners(AuditingEntityListener.class) // Auditing 리스너 등록
-public class Qna {
+public class Comments {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +25,7 @@ public class Qna {
     @Column
     private Long userId;
 
-    @Column
-    private String qnaTitle;
-
-    @Column
-    private String qnaContents;
+    // FIXME : 블로그 , qna 의 댓글 관리방식에 대해서 생각해보기!
 
     @Column
     @LastModifiedDate // 수정 시간 자동 업데이트
@@ -40,11 +35,5 @@ public class Qna {
     @CreatedDate // 등록 시간 자동 업데이트
     private LocalDateTime regTime;
 
-    public static Qna createQna(Long userId , QnaRequestDto.CreateQna requestDto) {
-        return Qna.builder()
-                .userId(userId)
-                .qnaTitle(requestDto.getQnaTitle())
-                .qnaContents(requestDto.getQnaContents())
-                .build();
-    }
+
 }

@@ -234,7 +234,7 @@ public class TokenUtils {
                 .build();
 
         return userService.findUserByEmail(userDto).orElseThrow(
-                () -> new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage() , ErrorCode.SELECT_ERROR));
+                () -> new BusinessExceptionHandler(ErrorCode.NOT_FOUND_USER.getMessage() , ErrorCode.NOT_FOUND_USER));
     }
 
 }
