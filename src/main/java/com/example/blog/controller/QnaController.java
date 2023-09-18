@@ -2,8 +2,6 @@ package com.example.blog.controller;
 
 import com.example.blog.common.codes.SuccessCode;
 import com.example.blog.common.response.ApiResult;
-import com.example.blog.dto.blog.BlogRequestDto;
-import com.example.blog.dto.blog.BlogResponseDto;
 import com.example.blog.dto.qna.QnaRequestDto;
 import com.example.blog.dto.qna.QnaResponseDto;
 import com.example.blog.service.qna.QnaService;
@@ -33,8 +31,8 @@ public class QnaController {
      * @param qnaId Long
      * @return ApiResponseWrapper<ApiResponse> : 응답 결과 및 응답 코드 반환
      */
-    @PostMapping(value = "/list-detail/{qnaId}" , produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "QnA 상세 조회" , notes = "선택 QnA 의 상세 내용을 조회한다.", httpMethod = "POST")
+    @GetMapping(value = "/list-detail/{qnaId}" , produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "QnA 상세 조회" , notes = "선택 QnA 의 상세 내용을 조회한다.", httpMethod = "GET")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success", response = QnaResponseDto.FindQnaDetail.class)
     })
@@ -49,8 +47,8 @@ public class QnaController {
      * @param size int
      * @return ApiResponseWrapper<ApiResponse> : 응답 결과 및 응답 코드 반환
      */
-    @PostMapping(value = "/list" , produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "QnA 목록 조회 (페이징)" , notes = "QnA 전체 목록을 조회한다.", httpMethod = "POST")
+    @GetMapping(value = "/list" , produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "QnA 목록 조회 (페이징)" , notes = "QnA 전체 목록을 조회한다.", httpMethod = "GET")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success", response = QnaResponseDto.FindQna.class)
     })
@@ -63,8 +61,8 @@ public class QnaController {
     /**
      * @return ApiResponseWrapper<ApiResponse> : 응답 결과 및 응답 코드 반환
      */
-    @PostMapping(value = "/latest-list" , produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "QnA 목록 조회 (최신 업데이트 순)" , notes = "QnA 최신 업데이트 순 4개를 조회한다.", httpMethod = "POST")
+    @GetMapping(value = "/latest-list" , produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "QnA 목록 조회 (최신 업데이트 순)" , notes = "QnA 최신 업데이트 순 4개를 조회한다.", httpMethod = "GET")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "success", response = QnaResponseDto.FindQna.class)
     })
