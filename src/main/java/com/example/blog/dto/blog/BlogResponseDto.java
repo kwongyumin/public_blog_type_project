@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @ApiModel(description = "블로그 요청 파라미터 관리")
 public class BlogResponseDto {
 
@@ -14,7 +16,7 @@ public class BlogResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class FindBlog {
+    public static class FindBlog implements Serializable{
 
         @ApiModelProperty(position = 1 ,  value = "유저 idx",required = true, example = "")
         private Long userId;
@@ -34,7 +36,7 @@ public class BlogResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class FindBlogDetail {
+    public static class FindBlogDetail implements Serializable {
 
         @ApiModelProperty(position = 1 ,  value = "유저 idx",required = true, example = "")
         private Long userId;
@@ -54,7 +56,7 @@ public class BlogResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class CreateBlog {
+    public static class CreateBlog implements Serializable{
 
         @ApiModelProperty(position = 1 ,  value = "카테고리 idx",required = true, example = "")
         private Long categoryId;

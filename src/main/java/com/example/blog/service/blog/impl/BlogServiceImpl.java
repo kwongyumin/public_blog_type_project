@@ -33,7 +33,7 @@ public class BlogServiceImpl implements BlogService {
      * 블로그의 상세 내용을 조회한다
      *
      * @param blogId Long
-     * @return BlogResponseDto.FindBlog List
+     * @return BlogResponseDto.FindBlog
      */
     @Override
     @Transactional(readOnly = true)

@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @ApiModel(description = "카테고리 응답 파라미터 관리")
 public class CategoryResponseDto {
 
@@ -14,7 +16,7 @@ public class CategoryResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class FindCategory {
+    public static class FindCategory implements Serializable {
 
         @ApiModelProperty(position = 1 , value ="카테고리 Idx",required = true)
         private Long categoryId;
@@ -34,7 +36,7 @@ public class CategoryResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class CreateCategory {
+    public static class CreateCategory implements Serializable{
 
         @ApiModelProperty(position = 1 , value ="카테고리 Idx",required = true)
         private Long categoryId;
@@ -48,7 +50,7 @@ public class CategoryResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class ModifyCategory {
+    public static class ModifyCategory implements Serializable {
 
         @ApiModelProperty(position = 1 , value ="카테고리 Idx",required = true)
         private Long categoryId;

@@ -40,7 +40,7 @@ public class BlogCustomRepositoryImpl implements BlogCustomRepository {
         List<Blog> blogList = queryFactory
                 .selectFrom(QBlog.blog)
                 .where(QBlog.blog.category.id.eq(categoryId))
-                .orderBy(QBlog.blog.regTime.desc())
+                .orderBy(QBlog.blog.modTime.desc())
                 .offset(page * size)
                 .limit(size)
                 .fetch();
@@ -55,7 +55,7 @@ public class BlogCustomRepositoryImpl implements BlogCustomRepository {
         List<Blog> latestBlogList = queryFactory
                 .selectFrom(QBlog.blog)
                 .where(QBlog.blog.userId.eq(userId))
-                .orderBy(QBlog.blog.regTime.desc())
+                .orderBy(QBlog.blog.modTime.desc())
                 .limit(4)
                 .fetch();
 

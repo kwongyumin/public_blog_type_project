@@ -25,7 +25,11 @@ public class Comments {
     @Column
     private Long userId;
 
-    // FIXME : 블로그 , qna 의 댓글 관리방식에 대해서 생각해보기!
+    @Column
+    private Long writeTypeId;
+
+    @Column
+    private WriteType writeType;
 
     @Column
     @LastModifiedDate // 수정 시간 자동 업데이트
