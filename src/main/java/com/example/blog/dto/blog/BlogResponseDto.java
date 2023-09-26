@@ -1,5 +1,7 @@
 package com.example.blog.dto.blog;
 
+import com.example.blog.dto.comments.CommentsResponseDto;
+import com.example.blog.dto.qna.QnaResponseDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -8,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @ApiModel(description = "블로그 요청 파라미터 관리")
 public class BlogResponseDto {
@@ -50,6 +53,8 @@ public class BlogResponseDto {
         @ApiModelProperty(position = 4 , value = "블로그 내용",required = true, example = "")
         private String blogContents;
 
+        @ApiModelProperty(position = 5 , value = "댓글 내용",required = true, example = "")
+        private List<CommentsResponseDto.FindCommentsDetail> commentsList;
     }
 
     @Getter

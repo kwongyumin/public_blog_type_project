@@ -1,5 +1,6 @@
 package com.example.blog.model.comments;
 
+import com.example.blog.dto.comments.CommentsRequestDto;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -32,12 +33,24 @@ public class Comments {
     private WriteType writeType;
 
     @Column
+    private String contents;
+
+    @Column
     @LastModifiedDate // 수정 시간 자동 업데이트
     private LocalDateTime modTime;
 
     @Column(updatable = false)
     @CreatedDate // 등록 시간 자동 업데이트
     private LocalDateTime regTime;
+
+    public static Comments createComments(Long userId, CommentsRequestDto.CreateComments requestDto) {
+        return Comments.builder()
+                .userId(userId)
+                .writeType(requestDto.getWriteType())
+                .writeTypeId(requestDto.getWriteTypeId())
+                .contents(requestDto.getContents())
+                .build();
+    }
 
 
 }
