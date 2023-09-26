@@ -32,6 +32,9 @@ public class Comments {
     private WriteType writeType;
 
     @Column
+    private String contents;
+
+    @Column
     @LastModifiedDate // 수정 시간 자동 업데이트
     private LocalDateTime modTime;
 
