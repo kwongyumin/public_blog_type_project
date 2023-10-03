@@ -71,6 +71,17 @@ public class BlogCustomRepositoryImpl implements BlogCustomRepository {
      * DESC : entity -> dto transferMethod
      *******************************************************************************************************************/
 
+
+    private BlogResponseDto.FindBlogDetail entityToFindBlogDetailDto(Blog blog) {
+        return BlogResponseDto.FindBlogDetail.builder()
+                .userId(blog.getUserId())
+                .blogId(blog.getId())
+                .blogTitle(blog.getBlogTitle())
+                .blogContents(blog.getBlogContents())
+                .commentsList(entityToFindCommentsDetailDto(blog))
+                .build();
+    }
+
     private List<CommentsResponseDto.FindCommentsDetail> entityToFindCommentsDetailDto(Blog blog) {
         List<CommentsResponseDto.FindCommentsDetail> targetList = new ArrayList<>();
         // 페이지내의 댓글을 조회한다.
@@ -81,28 +92,18 @@ public class BlogCustomRepositoryImpl implements BlogCustomRepository {
                         .and(QComments.comments.userId.eq(blog.getUserId())))
                 .fetch();
 
-       if (!CollectionUtils.isEmpty(commentsList)) {
-           commentsList.forEach(comments -> {
-               CommentsResponseDto.FindCommentsDetail target = CommentsResponseDto.FindCommentsDetail.builder()
-                       .commentsId(comments.getId())
-                       .writeTypeId(comments.getWriteTypeId())
-                       .userId(comments.getUserId())
-                       .contents(comments.getContents())
-                       .build();
-               targetList.add(target);
-           });
-       }
+        if (!CollectionUtils.isEmpty(commentsList)) {
+            commentsList.forEach(comments -> {
+                CommentsResponseDto.FindCommentsDetail target = CommentsResponseDto.FindCommentsDetail.builder()
+                        .commentsId(comments.getId())
+                        .writeTypeId(comments.getWriteTypeId())
+                        .userId(comments.getUserId())
+                        .contents(comments.getContents())
+                        .build();
+                targetList.add(target);
+            });
+        }
         return targetList;
-    }
-
-    private BlogResponseDto.FindBlogDetail entityToFindBlogDetailDto(Blog blog) {
-        return BlogResponseDto.FindBlogDetail.builder()
-                .userId(blog.getUserId())
-                .blogId(blog.getId())
-                .blogTitle(blog.getBlogTitle())
-                .blogContents(blog.getBlogContents())
-                .commentsList(entityToFindCommentsDetailDto(blog))
-                .build();
     }
 
     private List<BlogResponseDto.FindBlog> entityToFindBlogDtoList(List<Blog> blogList) {

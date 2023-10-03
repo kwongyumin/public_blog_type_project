@@ -51,7 +51,6 @@ public class SwaggerConfig {
                 .build();
     }
 
-    // FIXME : JWT 인증 로직 추가 후 스웨거 인증 같이 추가 예정
     private ApiKey apiKey() {
         return new ApiKey("JWT", "Authorization", "header");
     }

@@ -9,8 +9,10 @@ import com.example.blog.dto.blog.BlogResponseDto;
 import com.example.blog.dto.user.UserDto;
 import com.example.blog.model.blog.Blog;
 import com.example.blog.model.category.Category;
+import com.example.blog.model.comments.Comments;
 import com.example.blog.repository.blog.BlogRepository;
 import com.example.blog.repository.category.CategoryRepository;
+import com.example.blog.repository.comments.CommentsRepository;
 import com.example.blog.service.blog.BlogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,7 @@ public class BlogServiceImpl implements BlogService {
 
     private final BlogRepository blogRepository;
 
+    private final CommentsRepository commentsRepository;
 
     /**
      * 블로그의 상세 내용을 조회한다
@@ -105,17 +108,20 @@ public class BlogServiceImpl implements BlogService {
 
         // #1. api 접근 유저 정보 확인
         UserDto user = TokenUtils.getUserFromAuthentication();
-
         // #2.삭제 요청 블로그 조회
         Blog findBlog = blogRepository.findById(blogId).orElseThrow(
                 () ->  new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage() , ErrorCode.SELECT_ERROR));
-
         // #3. api 요청 유저의 pk 와 블로그 작성자의 pk가 동일하지 않은 경우 예외 처리
         if (! user.getUserId().equals(findBlog.getUserId())) {
             throw new BusinessExceptionHandler(ErrorCode.DELETE_ERROR.getMessage() , ErrorCode.DELETE_ERROR);
         }
-        // #4. 삭제
+        // FIXME: 블로그 및 댓글의 연관관계를 설정하여 삭제 처리 하도록 수정 필요
+        // #4 블로그 하위 댓글도 동시 삭제 처리
+        List<Comments> commentsList = commentsRepository.findCommentsListByBlog(findBlog).orElseThrow(
+                () -> new BusinessExceptionHandler(ErrorCode.SELECT_ERROR.getMessage(), ErrorCode.SELECT_ERROR));
+        // #5. 삭제
         blogRepository.delete(findBlog);
+        commentsRepository.deleteAll(commentsList);
     }
 
 }
